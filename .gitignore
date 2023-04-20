@@ -3,3 +3,6 @@
 
 #ignore mac-os system configuration files
 .DS_Store
+
+#ignore flutter build folder
+/build
