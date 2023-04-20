@@ -1,0 +1,5 @@
+# ignore dart tool
+.dart_tool
+
+#ignore mac-os system configuration files
+.DS_Store
