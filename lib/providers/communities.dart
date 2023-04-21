@@ -30,7 +30,7 @@ class Communities with ChangeNotifier {
     ),
   ];
 
-  List<Community> get businessesList {
+  List<Community> get communitiesList {
     return [..._communitiesList];
   }
 }
