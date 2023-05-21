@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import './screens/communities_feed.dart';
-import './screens/businesses_feed.dart';
+import 'package:provider/provider.dart';
+import 'package:workit/screens/home_screen.dart';
+import 'package:workit/theme.dart';
+
 import './providers/businesses.dart';
+import './constant/routes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -19,10 +22,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: Businesses()),
       ],
       child: MaterialApp(
-        title: 'WorkIt',
-        home: BusinessesFeed(),
+        theme: CurrentTheme().themeData, 
+        initialRoute: homeScreenName,
         routes: {
-          CommunitiesFeed.routeName: (context) => CommunitiesFeed(),
+          homeScreenName: (context) => const HomeScreen(),
         },
       ),
     );
