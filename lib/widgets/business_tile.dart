@@ -4,7 +4,7 @@ import 'package:workit/models/business.dart';
 class BusinessTile extends StatelessWidget {
   final Business _business;
 
-  BusinessTile(this._business);
+  const BusinessTile(this._business, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +27,13 @@ class BusinessTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Row(children: [
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text("${_business.distance} km away"),
               ]),
               Row(children: [
                 Text(_business.rate.toString()),
-                Icon(Icons.star_rate),
-                SizedBox(width: 10),
+                const Icon(Icons.star_rate),
+                const SizedBox(width: 10),
               ]),
             ],
           ),

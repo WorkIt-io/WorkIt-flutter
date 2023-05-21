@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: Businesses()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: CurrentTheme().themeData, 
         initialRoute: homeScreenName,
         routes: {
