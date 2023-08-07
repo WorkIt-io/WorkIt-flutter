@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workit/models/community.dart';
-import 'package:workit/providers/communities.dart';
+import '../constant/dummy_data.dart';
 
 class CommunitiesFeed extends StatefulWidget {
   const CommunitiesFeed({super.key});
