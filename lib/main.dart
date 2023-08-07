@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
 import 'package:workit/screens/home_screen.dart';
 import 'package:workit/theme.dart';
-
-import './providers/businesses.dart';
 import './constant/routes.dart';
 
 void main() {
@@ -17,17 +13,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: Businesses()),
-      ],
-      child: MaterialApp(
-        theme: CurrentTheme().themeData, 
-        initialRoute: homeScreenName,
-        routes: {
-          homeScreenName: (context) => const HomeScreen(),
-        },
-      ),
+    return MaterialApp(      
+      theme: CurrentTheme().themeData, 
+      initialRoute: homeScreenName,
+      routes: {
+        homeScreenName: (context) => const HomeScreen(),
+      },
     );
   }
 }

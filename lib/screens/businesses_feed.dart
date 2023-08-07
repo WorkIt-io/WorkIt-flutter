@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../providers/businesses.dart';
+import '../constant/dummy_data.dart';
 import '../widgets/business_tile.dart';
 
 class BusinessesFeed extends StatefulWidget {
