@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:workit/screens/businesses_feed.dart';
 import 'package:workit/screens/communities_feed.dart';
+import 'package:workit/widgets/navigation_bar.dart';
 
+import '../widgets/search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,34 +17,31 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late int currentFeedIndex = 0;
 
+  void onSelectItem(int navigationBarIndex) {
+    setState(() {
+      currentFeedIndex = navigationBarIndex;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('WorkIt'),
+        actions: [
+          IconButton(
+              onPressed: () => showSearch(
+                    context: context,
+                    delegate: CustomSearchDelegate(),
+                  ),
+              icon: const Icon(Icons.search))
+        ],
       ),
       body: IndexedStack(
         index: currentFeedIndex,
         children: widget.feeds,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentFeedIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group),
-            label: 'Communities',
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            currentFeedIndex = index;
-          });
-        },
-      ),
+      bottomNavigationBar: CustomNavigationBar(onSelectItem: onSelectItem),
     );
   }
 }
