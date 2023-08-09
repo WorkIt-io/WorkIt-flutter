@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "970082657610",
+    "project_id": "work-it-eb8a3",
+    "storage_bucket": "work-it-eb8a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970082657610:android:9955b10e3a63c1a4ba0db3",
+        "android_client_info": {
+          "package_name": "com.example.workit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970082657610-m3663iarq0vm6pi5sjtrm90b6c4ra683.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgnk4oIId8GB3WUYvLqL9JHKjxOUrF-jE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970082657610-m3663iarq0vm6pi5sjtrm90b6c4ra683.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "970082657610-4v6hkmofrg15qmppej5ksfsgrgn2hl78.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.workit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

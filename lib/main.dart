@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:workit/screens/home_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/theme.dart';
-import './constant/routes.dart';
+import 'package:workit/widgets/stream_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -13,12 +16,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(      
-      theme: CurrentTheme().themeData, 
-      initialRoute: homeScreenName,
-      routes: {
-        homeScreenName: (context) => const HomeScreen(),
-      },
+    return MaterialApp(
+      theme: CurrentTheme().themeData,
+      home: const StreamAuth(),
     );
   }
 }
