@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:workit/screens/businesses_feed.dart';
 import 'package:workit/screens/communities_feed.dart';
-import 'package:workit/widgets/navigation_bar.dart';
+import 'package:workit/widgets/home/navigation_bar.dart';
 
-import '../widgets/drawer_home_page.dart';
-import '../widgets/search_bar.dart';
+import '../widgets/home/drawer_home_page.dart';
+import '../widgets/home/search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,9 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    
-
+  Widget build(BuildContext context) {    
     return Scaffold(
       drawer: const DrawerHomePage(),
       appBar: AppBar(

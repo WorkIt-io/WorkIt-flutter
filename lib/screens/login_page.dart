@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isLogin = true;
+  bool _isLoading = false;
 
   final _form = GlobalKey<FormState>();
   var _email = '';
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
       _form.currentState!.save();       
 
       try {
+        setState(() => _isLoading = true );
         final UserCredential userCredential = _isLogin ?
          await firebaseInstance.signInWithEmailAndPassword(email: _email, password: _password) 
          : await firebaseInstance.createUserWithEmailAndPassword(email: _email, password: _password);
@@ -30,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(error.message ?? 'Authentication failed.')));
+        setState(() => _isLoading = false);
       }
     }
   }
@@ -79,23 +82,27 @@ class _LoginPageState extends State<LoginPage> {
                           onSaved: (newValue) => _password = newValue!,
                         ),
                         const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: onLogin,
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer),
-                          child: Text(_isLogin ? 'Login' : 'Signup'),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _isLogin = !_isLogin;
-                              });
-                            },
-                            child: Text(_isLogin
-                                ? 'Create an account'
-                                : 'I already have an account')),
+                        if(_isLoading)
+                          const CircularProgressIndicator(),
+                        if (!_isLoading)
+                          ElevatedButton(
+                            onPressed: onLogin,
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer),
+                            child: Text(_isLogin ? 'Login' : 'Signup'),
+                          ),
+                        if (!_isLoading)
+                          TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isLogin = !_isLogin;
+                                });
+                              },
+                              child: Text(_isLogin
+                                  ? 'Create an account'
+                                  : 'I already have an account')),
                       ],
                     ),
                   ),
