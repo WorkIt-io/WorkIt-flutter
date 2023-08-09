@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 ColorScheme colorScheme = ColorScheme.fromSeed(
-  seedColor: const Color.fromARGB(213, 132, 173, 229),
+  seedColor: const Color.fromARGB(212, 255, 168, 36),
   brightness: Brightness.light,
 );
 
@@ -11,7 +11,7 @@ class CurrentTheme {
     return ThemeData().copyWith(
       appBarTheme: const AppBarTheme().copyWith(
         backgroundColor: colorScheme.primaryContainer,
-        foregroundColor: colorScheme.onPrimaryContainer,
+        foregroundColor: colorScheme.onPrimaryContainer,        
       ),
       textTheme: GoogleFonts.latoTextTheme(),
       useMaterial3: true,
