@@ -21,4 +21,14 @@ class LoginPageHelper
 
     return null;
   }
+
+  static String? validateFullName(String? input)
+  {
+    if (input == null || input.trim().length < 4)
+    {
+      return 'Please enter at lest 4 characters';
+    }
+
+    return null;
+  }  
 }

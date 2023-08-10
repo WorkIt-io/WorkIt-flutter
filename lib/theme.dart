@@ -15,7 +15,7 @@ class CurrentTheme {
       ),
       textTheme: GoogleFonts.latoTextTheme(),
       useMaterial3: true,
-      colorScheme: colorScheme,
+      colorScheme: colorScheme,      
     );
   }
 }

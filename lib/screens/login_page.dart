@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:workit/api/firestore_api.dart';
 import 'package:workit/utils/login_page_helper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../constant/firebase_instance.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,19 +17,31 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
 
   final _form = GlobalKey<FormState>();
-  var _email = '';
-  var _password = '';
+  String _email = '';
+  String _password = '';  
 
-  Future<void> onLogin() async {
+
+  Future<void> onLogin() async {    
     if (_form.currentState!.validate()) {
-      _form.currentState!.save();       
+      _form.currentState!.save();
 
-      try {
-        setState(() => _isLoading = true );
-        final UserCredential userCredential = _isLogin ?
-         await firebaseInstance.signInWithEmailAndPassword(email: _email, password: _password) 
-         : await firebaseInstance.createUserWithEmailAndPassword(email: _email, password: _password);
+      try {        
+        setState(() => _isLoading = true);
+        final UserCredential userCredential;
+        if (_isLogin) {
+          userCredential = await firebaseInstance.signInWithEmailAndPassword(
+              email: _email, password: _password);
 
+          if (userCredential.user!.emailVerified) {            
+            await FirestoreApi.setEmailRole(userCredential);
+          }
+        } else {
+          userCredential =
+              await firebaseInstance.createUserWithEmailAndPassword(
+                  email: _email, password: _password);
+
+          await userCredential.user!.sendEmailVerification();
+        }
       } on FirebaseAuthException catch (error) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -46,8 +60,8 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: const EdgeInsets.only(                  
-                     top: 50, bottom: 20, left: 20, right: 20),
+                margin: const EdgeInsets.only(
+                    top: 50, bottom: 20, left: 20, right: 20),
                 width: 250,
                 child: Image.asset(
                   'assets/images/workit_logo_no_bg.png',
@@ -63,8 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         TextFormField(
-                          decoration:
-                              const InputDecoration(labelText: 'email'),
+                          decoration: const InputDecoration(labelText: 'email'),
                           keyboardType: TextInputType.emailAddress,
                           autocorrect: false,
                           textCapitalization: TextCapitalization.none,
@@ -82,8 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                           onSaved: (newValue) => _password = newValue!,
                         ),
                         const SizedBox(height: 16),
-                        if(_isLoading)
-                          const CircularProgressIndicator(),
+                        if (_isLoading) const CircularProgressIndicator(),
                         if (!_isLoading)
                           ElevatedButton(
                             onPressed: onLogin,
