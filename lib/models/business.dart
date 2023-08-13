@@ -1,3 +1,5 @@
+import 'package:location/location.dart';
+
 class Business {
   final String id;
   final String name;
@@ -5,6 +7,7 @@ class Business {
   final String description;
   final double rate;
   final double distance;
+  LocationData? location; // when adding business we add location.
 
   Business({
     required this.id,

@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../constant/firebase_instance.dart';
 
-class FirestoreApi {
+class FirestoreLoginApi {
   static Future setEmailRole(UserCredential user) async {
     final ref =
         FirebaseFirestore.instance.collection('users').doc(user.user!.uid);
