@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:workit/constant/firebase_instance.dart';
 import 'package:workit/screens/home_screen.dart';
 import 'package:workit/screens/login_page.dart';
+import 'package:workit/screens/verify_email_screen.dart';
 
 class StreamAuth extends StatelessWidget {
   const StreamAuth({super.key});
@@ -10,12 +13,13 @@ class StreamAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: firebaseInstance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
+      builder: (context, snapshot) {              
+        if (snapshot.hasData && (snapshot.data!.emailVerified)) {
           return const HomeScreen();
-        } else {
-          return const LoginPage();
+        } else if (snapshot.hasData && snapshot.data!.emailVerified == false) {
+          return const EmailVerificationPage();
         }
+        return const LoginPage();
       },
     );
   }
