@@ -4,10 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:workit/utils/business_upload_image.dart';
+import 'package:workit/api/storage_image_business_api.dart';
+import 'package:workit/common/snack_bar_custom.dart';
 
 class BusinessImages extends StatefulWidget {
-  const BusinessImages({super.key});
+  const BusinessImages({super.key});  
 
   @override
   State<BusinessImages> createState() => _BusinessImagesState();
@@ -22,7 +23,7 @@ class _BusinessImagesState extends State<BusinessImages> {
   @override
   void initState() {
     super.initState();
-    retriveAllImages = BusinessUploadImage.retriveAllImages();
+    retriveAllImages = ImageBusinessApi.retriveAllImages();
   }
 
   @override
@@ -31,7 +32,7 @@ class _BusinessImagesState extends State<BusinessImages> {
       future: retriveAllImages,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: Container(margin: const EdgeInsets.all(8) , padding: const EdgeInsets.all(8),child: const CircularProgressIndicator()));
         } else if (snapshot.hasData) {
           images = snapshot.data!;
           return Column(
@@ -46,6 +47,7 @@ class _BusinessImagesState extends State<BusinessImages> {
                 child: images.isEmpty
                     ? Text(
                         "No Images Yet.",
+                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.displayMedium,
                       )
                     : PageView.builder(
@@ -81,13 +83,13 @@ class _BusinessImagesState extends State<BusinessImages> {
                   ),
                 ),
               const SizedBox(height: 10),
-              ElevatedButton(
+              ElevatedButton( //later change the buttons only bw shown by Admin of this page
                   onPressed: () async {
                     XFile? xfile =
                         await imagePicker.pickImage(source: ImageSource.camera);
                     if (xfile != null) {
                       try {
-                        String url = await BusinessUploadImage.uploadToFireBase(
+                        String url = await ImageBusinessApi.uploadToFireBase(                            
                             fileName: "${images.length}.jpg",
                             image: File(xfile.path));
                         setState(() {
@@ -95,9 +97,7 @@ class _BusinessImagesState extends State<BusinessImages> {
                         });
                       } catch (e) {
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Can\'t Upload Image.')));
+                          SnakcBarCustom.showSnackBar(context, 'Can\'t Upload Image.');
                         }
                       }
                     }
@@ -108,8 +108,7 @@ class _BusinessImagesState extends State<BusinessImages> {
                   onPressed: images.isEmpty
                       ? null
                       : () async {
-                          await BusinessUploadImage.removeImage(
-                              images.length - 1);
+                          await ImageBusinessApi.removeImage(fileIdToRemove: images.length - 1);
                           setState(() {
                             currentPageIndex =
                                 currentPageIndex == images.length - 1

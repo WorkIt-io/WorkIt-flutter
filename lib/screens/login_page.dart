@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:workit/api/firestore_api.dart';
+
+import 'package:workit/api/firestore_login_api.dart';
+import 'package:workit/common/snack_bar_custom.dart';
+
 import 'package:workit/utils/login_page_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../constant/firebase_instance.dart';
@@ -33,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
               email: _email, password: _password);
 
           if (userCredential.user!.emailVerified) {            
-            await FirestoreApi.setEmailRole(userCredential);
+            await FirestoreLoginApi.setEmailRole(userCredential);
           }
         } else {
           userCredential =
@@ -43,9 +46,7 @@ class _LoginPageState extends State<LoginPage> {
           await userCredential.user!.sendEmailVerification();
         }
       } on FirebaseAuthException catch (error) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(error.message ?? 'Authentication failed.')));
+        SnakcBarCustom.showSnackBar(context, error.message ?? 'Authentication failed.');
         setState(() => _isLoading = false);
       }
     }

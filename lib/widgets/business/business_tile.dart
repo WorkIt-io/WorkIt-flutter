@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:workit/models/business.dart';
 import 'package:workit/screens/businesses_detail_screen.dart';
 
+import '../../providers/business.dart';
+
 class BusinessTile extends StatelessWidget {
   final Business _business;
 
@@ -14,8 +16,10 @@ class BusinessTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctx) => BusinessDeatilScreen(business: _business,))),
+            onTap: () {
+              selectedBusiness = _business;
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (ctx) => BusinessDeatilScreen(business: _business,)));},
             leading: CircleAvatar(
               backgroundColor: Colors.white,
               child: Image.network(
