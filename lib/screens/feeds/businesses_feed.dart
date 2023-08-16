@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constant/dummy_data.dart';
-import '../providers/business.dart';
-import '../widgets/business/business_tile.dart';
+
+import '../../constant/dummy_data.dart';
+import '../../widgets/business/business_tile.dart';
 
 class BusinessesFeed extends StatefulWidget {
   const BusinessesFeed({super.key});
@@ -15,11 +15,11 @@ class BusinessesFeedState extends State<BusinessesFeed> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-          itemCount: Businesses().businessesList.length,
-          itemBuilder: (context, index) {
-            selectedBusiness = Businesses().businessesList[index];
-            return BusinessTile(selectedBusiness!);
-          }),
+        itemCount: Businesses().businessesList.length,
+        itemBuilder: (context, index) {
+          return BusinessTile(Businesses().businessesList[index]);
+        },
+      ),
     );
   }
 }

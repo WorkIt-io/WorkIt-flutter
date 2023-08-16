@@ -5,12 +5,10 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:workit/api/storage_image_business_api.dart';
-import 'package:workit/models/business.dart';
+import 'package:workit/common/snack_bar_custom.dart';
 
 class BusinessImages extends StatefulWidget {
-  const BusinessImages({super.key, required this.business});
-
-  final Business business;
+  const BusinessImages({super.key});  
 
   @override
   State<BusinessImages> createState() => _BusinessImagesState();
@@ -25,7 +23,7 @@ class _BusinessImagesState extends State<BusinessImages> {
   @override
   void initState() {
     super.initState();
-    retriveAllImages = ImageBusinessApi.retriveAllImages(business: widget.business);
+    retriveAllImages = ImageBusinessApi.retriveAllImages();
   }
 
   @override
@@ -49,6 +47,7 @@ class _BusinessImagesState extends State<BusinessImages> {
                 child: images.isEmpty
                     ? Text(
                         "No Images Yet.",
+                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.displayMedium,
                       )
                     : PageView.builder(
@@ -90,8 +89,7 @@ class _BusinessImagesState extends State<BusinessImages> {
                         await imagePicker.pickImage(source: ImageSource.camera);
                     if (xfile != null) {
                       try {
-                        String url = await ImageBusinessApi.uploadToFireBase(
-                            business: widget.business,
+                        String url = await ImageBusinessApi.uploadToFireBase(                            
                             fileName: "${images.length}.jpg",
                             image: File(xfile.path));
                         setState(() {
@@ -99,9 +97,7 @@ class _BusinessImagesState extends State<BusinessImages> {
                         });
                       } catch (e) {
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Can\'t Upload Image.')));
+                          SnakcBarCustom.showSnackBar(context, 'Can\'t Upload Image.');
                         }
                       }
                     }
@@ -112,7 +108,7 @@ class _BusinessImagesState extends State<BusinessImages> {
                   onPressed: images.isEmpty
                       ? null
                       : () async {
-                          await ImageBusinessApi.removeImage(fileIdToRemove: images.length - 1,business: widget.business);
+                          await ImageBusinessApi.removeImage(fileIdToRemove: images.length - 1);
                           setState(() {
                             currentPageIndex =
                                 currentPageIndex == images.length - 1

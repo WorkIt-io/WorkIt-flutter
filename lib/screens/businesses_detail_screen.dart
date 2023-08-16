@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workit/widgets/business/business_images.dart';
-import 'package:workit/widgets/business/reviews_business.dart';
+import 'package:workit/widgets/business/review/reviews_business.dart';
 
 import '../models/business.dart';
 import '../widgets/business/location_widget.dart';
@@ -15,28 +15,43 @@ class BusinessDeatilScreen extends StatefulWidget {
 }
 
 class _BusinessDeatilScreenState extends State<BusinessDeatilScreen> {
-
-
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(widget.business.name),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(10, 15, 10, 20),
-          child: Column(  
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              BusinessImages(business: widget.business),
-              const LocationWidget(),
-              ReviewsBusiness(business: widget.business,),
-            ],
-          ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(10, 15, 10, 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Images",
+              style: theme.textTheme.displaySmall!.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.bold),
+            ),
+            const BusinessImages(),
+            const SizedBox(height: 20),
+            Text(
+              "Location",
+              style: theme.textTheme.displaySmall!.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.bold),
+            ),
+            const LocationWidget(),
+            const SizedBox(height: 20),
+            Text(
+              "Reviews",
+              style: theme.textTheme.displaySmall!.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.bold),
+            ),
+            const ReviewsBusiness(),
+          ],
         ),
       ),
     );

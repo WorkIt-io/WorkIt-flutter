@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:workit/screens/businesses_feed.dart';
-import 'package:workit/screens/communities_feed.dart';
+import 'package:workit/screens/feeds/businesses_feed.dart';
+import 'package:workit/screens/feeds/communities_feed.dart';
 
 import '../widgets/home/navigation_bar.dart';
 import '../widgets/home/drawer_home_page.dart';

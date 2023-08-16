@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:workit/models/business.dart';
+import 'package:workit/providers/business.dart';
 
 class ImageBusinessApi {
-  static String get _path => "business_image/";
+  static String get _path => "${selectedBusiness!.id}/business_image";
 
-  static Future<String> uploadToFireBase({required String fileName, required File image, required Business business}) async {
-    final String pathToUpload = "${business.id}/$_path/$fileName";
+  static Future<String> uploadToFireBase({required String fileName, required File image}) async {
     try {
-      var ref = FirebaseStorage.instance.ref(pathToUpload);
+      var ref = FirebaseStorage.instance.ref('$_path/$fileName');
       await ref.putFile(image);
       String downloadUrl = await ref.getDownloadURL();
       return downloadUrl;
@@ -18,10 +17,10 @@ class ImageBusinessApi {
     }
   }
 
-  static Future<List<String>> retriveAllImages ({required Business business})
+  static Future<List<String>> retriveAllImages ()
   async {
     List<String> downloadUrl = [];
-    ListResult listResult = await FirebaseStorage.instance.ref("${business.id}/$_path").list();
+    ListResult listResult = await FirebaseStorage.instance.ref(_path).list();
 
     for (Reference item in listResult.items) {
       String url = await item.getDownloadURL();      
@@ -31,9 +30,9 @@ class ImageBusinessApi {
     return downloadUrl;    
   }
 
-  static Future removeImage({required int fileIdToRemove, required Business business}) async
+  static Future removeImage({required int fileIdToRemove}) async
   {
-    final String pathToRemove = "${business.id}/$_path/$fileIdToRemove.jpg";
+    final String pathToRemove = "$_path/$fileIdToRemove.jpg";
     await FirebaseStorage.instance.ref(pathToRemove).delete();
   }
 }
