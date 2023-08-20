@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:workit/api/firestore_login_api.dart';
-import 'package:workit/common/snack_bar_custom.dart';
-import 'package:workit/controller/auth_controller.dart';
 import 'package:workit/utils/login_page_helper.dart';
-import '../constant/firebase_instance.dart';
+
+import '../controller/auth_controller.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
