@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/controller/auth_controller.dart';
+import 'package:workit/screens/home_screen.dart';
+import 'package:workit/screens/login_page.dart';
+import 'package:workit/screens/verify_email_screen.dart';
 import 'package:workit/theme.dart';
-import 'package:workit/widgets/stream_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -19,8 +22,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: CurrentTheme().themeData,      
-      home: const StreamAuth(),
+      theme: CurrentTheme().themeData,
+      home: const UserAuthStream(),
     );
+  }
+}
+
+class UserAuthStream extends ConsumerWidget {
+  const UserAuthStream({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(userStreamAuthProvider).when(
+          data: (user) {
+            if (user != null) // user Sign Up already.
+            {
+              return user.emailVerified
+                  ? const HomeScreen()
+                  : const EmailVerificationPage();
+            } else // user never Sign Up.
+            {
+              return const LoginPage();
+            }
+          },
+          error: (error, stackTrace) => const Scaffold(),
+          loading: () => const CircularProgressIndicator(),
+        );
   }
 }
