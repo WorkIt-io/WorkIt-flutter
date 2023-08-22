@@ -15,8 +15,8 @@ class BusinessesFeedState extends State<BusinessesFeed> {
   @override
   Widget build(BuildContext context) {
     final bussines = Businesses().businessesList;
-
     var theme = Theme.of(context);
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +27,7 @@ class BusinessesFeedState extends State<BusinessesFeed> {
           const SizedBox(height: 10),
           const Divider(),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),            
             child: Text("Best Rate",
                 style: theme.textTheme.headlineMedium!.copyWith(
                     color: theme.colorScheme.primary,
