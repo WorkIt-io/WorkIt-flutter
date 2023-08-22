@@ -67,7 +67,6 @@ class _LocationWidgetState extends State<LocationWidget> {
             margin: const EdgeInsets.only(top: 30),            
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              //border: Border.all(width: 1),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:workit/common/snack_bar_custom.dart';
+import 'package:workit/common/custom_snack_bar.dart.dart';
+
 import 'package:workit/constant/firebase_instance.dart';
 import 'package:workit/providers/review.dart';
 
@@ -42,10 +43,11 @@ class _ReviewDialogState extends ConsumerState<ReviewDialog> {
       try {
         !widget.isUpdate ? await ref.read(reviewProvider.notifier).postReview(review) : await ref.read(reviewProvider.notifier).updateReview(review);
         if (context.mounted) {
-          SnakcBarCustom.showSnackBar(context, !widget.isUpdate ? "Review Updated" : "Review Upload");
+          CustomSnackBar.showSnackBar(context, !widget.isUpdate ? "Review Updated" : "Review Upload");
         }
       } catch (error) {
-        SnakcBarCustom.showSnackBar(context, error.toString());
+        CustomSnackBar.showSnackBar(context, error.toString());
+
       } finally {
         Navigator.of(context).pop();
         formKey.currentState!.reset();

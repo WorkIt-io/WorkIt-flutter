@@ -28,24 +28,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {    
-    return Scaffold(
-      drawer: const DrawerHomePage(),
-      appBar: AppBar(
-        title: const Text('WorkIt'),
-        actions: [
-          IconButton(
-              onPressed: () => showSearch(
-                    context: context,
-                    delegate: CustomSearchDelegate(),
-                  ),
-              icon: const Icon(Icons.search))
-        ],
+    return SafeArea(
+      child: Scaffold(
+        //drawer: const DrawerHomePage(),
+        backgroundColor: Colors.grey[200],
+        // appBar: AppBar(
+        //   title: const Text('WorkIt'),
+          
+        // ),
+        body: IndexedStack(
+          index: currentFeedIndex,
+          children: widget.feeds,
+        ),
+        bottomNavigationBar: CustomNavigationBar(onSelectItem: onSelectItem),
       ),
-      body: IndexedStack(
-        index: currentFeedIndex,
-        children: widget.feeds,
-      ),
-      bottomNavigationBar: CustomNavigationBar(onSelectItem: onSelectItem),
     );
   }
 }

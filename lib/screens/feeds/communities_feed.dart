@@ -14,8 +14,8 @@ class CommunitiesFeedState extends State<CommunitiesFeed> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(      
-      body: ListView.builder(        
+    return  
+      ListView.builder(        
         itemCount: commList.length,
         itemBuilder: (context, index) => InkWell(
           onTap: () {},
@@ -36,7 +36,6 @@ class CommunitiesFeedState extends State<CommunitiesFeed> {
             ),
           ),
         ),
-      ),
-    );
+      );    
   }
 }

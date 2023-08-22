@@ -7,7 +7,9 @@ class Business {
   final String description;
   final double rate;
   final double distance;
-  LocationData? location; // when adding business we add location.
+  LocationData? location;   // when adding business we add location.
+  final int price;
+
 
   Business({
     required this.id,
@@ -16,5 +18,6 @@ class Business {
     required this.description,
     required this.rate,
     required this.distance,
+    required this.price,
   });
 }
