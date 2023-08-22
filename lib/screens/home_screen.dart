@@ -28,20 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {    
-    return SafeArea(
-      child: Scaffold(
-        //drawer: const DrawerHomePage(),
-        backgroundColor: Colors.grey[200],
-        // appBar: AppBar(
-        //   title: const Text('WorkIt'),
-          
-        // ),
-        body: IndexedStack(
-          index: currentFeedIndex,
-          children: widget.feeds,
-        ),
-        bottomNavigationBar: CustomNavigationBar(onSelectItem: onSelectItem),
+    return Scaffold(
+      drawer: const DrawerHomePage(),
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: const Text('WorkIt'),
+        backgroundColor: Colors.blueGrey[100],
       ),
+      body: IndexedStack(
+        index: currentFeedIndex,
+        children: widget.feeds,
+      ),
+      bottomNavigationBar: CustomNavigationBar(onSelectItem: onSelectItem),
     );
   }
 }
