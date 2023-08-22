@@ -10,6 +10,7 @@ class Business {
   LocationData? location;   // when adding business we add location.
   final int price;
 
+
   Business({
     required this.id,
     required this.name,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
+
 import 'package:workit/constant/firebase_instance.dart';
 import 'package:workit/providers/review.dart';
 
@@ -46,6 +47,7 @@ class _ReviewDialogState extends ConsumerState<ReviewDialog> {
         }
       } catch (error) {
         CustomSnackBar.showSnackBar(context, error.toString());
+
       } finally {
         Navigator.of(context).pop();
         formKey.currentState!.reset();

@@ -12,6 +12,7 @@ class TextIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text.rich(      
       TextSpan(        
+
         text: text,
         style: style ?? Theme.of(context).textTheme.titleLarge,
         children: [

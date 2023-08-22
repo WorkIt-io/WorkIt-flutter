@@ -4,6 +4,7 @@ import 'package:workit/widgets/home/business/business_row.dart';
 import '../../constant/dummy_data.dart';
 import '../../widgets/home/search_text_filed.dart';
 
+
 class BusinessesFeed extends StatefulWidget {
   const BusinessesFeed({super.key});
 
