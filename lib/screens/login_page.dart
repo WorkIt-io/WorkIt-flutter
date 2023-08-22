@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:workit/api/firestore_login_api.dart';
 import 'package:workit/common/snack_bar_custom.dart';
+
 import 'package:workit/utils/login_page_helper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../constant/firebase_instance.dart';
 
 class LoginPage extends StatefulWidget {
