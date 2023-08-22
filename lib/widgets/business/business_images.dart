@@ -8,9 +8,8 @@ import 'package:workit/api/storage_image_business_api.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
 import 'package:workit/common/select_image.dart';
 
-
 class BusinessImages extends StatefulWidget {
-  const BusinessImages({super.key});  
+  const BusinessImages({super.key});
 
   @override
   State<BusinessImages> createState() => _BusinessImagesState();
@@ -34,7 +33,11 @@ class _BusinessImagesState extends State<BusinessImages> {
       future: retriveAllImages,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: Container(margin: const EdgeInsets.all(8) , padding: const EdgeInsets.all(8),child: const CircularProgressIndicator()));
+          return Center(
+              child: Container(
+                  margin: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
+                  child: const CircularProgressIndicator()));
         } else if (snapshot.hasData) {
           images = snapshot.data!;
           return Column(
@@ -85,14 +88,13 @@ class _BusinessImagesState extends State<BusinessImages> {
                   ),
                 ),
               const SizedBox(height: 10),
-              ElevatedButton( //later change the buttons only bw shown by Admin of this page
+              ElevatedButton(
+                  //later change the buttons only bw shown by Admin of this page
                   onPressed: () async {
                     File? imageFile = await selectImage(context);
                     if (imageFile != null) {
                       try {
-                        String url = await ImageBusinessApi.uploadToFireBase(                            
-                            fileName: "${images.length}.jpg",
-                            image: File(xfile.path));
+                        String url = await ImageBusinessApi.uploadToFireBase(fileName: "${images.length}.jpg", image: imageFile);                        
                         setState(() {
                           images.add(url);
                         });
@@ -109,7 +111,8 @@ class _BusinessImagesState extends State<BusinessImages> {
                   onPressed: images.isEmpty
                       ? null
                       : () async {
-                          await ImageBusinessApi.removeImage(fileIdToRemove: images.length - 1);
+                          await ImageBusinessApi.removeImage(
+                              fileIdToRemove: images.length - 1);
                           setState(() {
                             currentPageIndex =
                                 currentPageIndex == images.length - 1
