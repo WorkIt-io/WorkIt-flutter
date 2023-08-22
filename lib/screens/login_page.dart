@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
 import 'package:workit/utils/login_page_helper.dart';
@@ -24,6 +25,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> onLogin() async {
     if (_form.currentState!.validate()) {
       _form.currentState!.save();
+
       setState(() => _isLoading = true);
       try {
         _isLogin == true

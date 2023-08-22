@@ -98,8 +98,10 @@ class _BusinessImagesState extends State<BusinessImages> {
                         setState(() {
                           images.add(url);
                         });
-                      } catch (e) {
-                        CustomSnackBar.showSnackBar(context, e.toString());
+                      } catch (e) {                        
+                        if (context.mounted) {
+                          CustomSnackBar.showSnackBar(context, e.toString());                          
+                        }
                       }
                     }
                   },
