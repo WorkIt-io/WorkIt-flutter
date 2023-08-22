@@ -25,13 +25,13 @@ class AuthController {
     return authRepository.getCurrentUser();
   }
     
-  void login(BuildContext context, String email, String password)
+  Future<void> login(BuildContext context, String email, String password) async
   {
-    authRepository.login(context, email, password);
+    await authRepository.login(context, email, password);
   }
 
-  void signup(BuildContext context, String email, String password)
-  {
+  Future<void> signup(BuildContext context, String email, String password)
+  async {
     authRepository.signup(context, email, password);
   }
 }

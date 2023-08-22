@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/common/custom_snack_bar.dart.dart';
 import 'package:workit/utils/login_page_helper.dart';
 
 import '../controller/auth_controller.dart';
@@ -21,18 +23,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> onLogin() async {
     if (_form.currentState!.validate()) {
-      _form.currentState!.save();      
-        setState(() => _isLoading = true);
+      _form.currentState!.save();
+      setState(() => _isLoading = true);
+      try {
         _isLogin == true
-            ? ref.read(authControllerProvider).login(context, _email, _password)
-            : ref
+            ? await ref
+                .read(authControllerProvider)
+                .login(context, _email, _password)
+            : await ref
                 .read(authControllerProvider)
                 .signup(context, _email, _password);
-        await Future.delayed(const Duration(seconds: 1));            
+      } on FirebaseAuthException catch (e) {
+        CustomSnackBar.showSnackBar(context, e.message!);
+        setState(() => _isLoading = false);
+      }
     }
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
