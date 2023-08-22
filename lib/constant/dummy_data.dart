@@ -12,6 +12,7 @@ class Businesses
       description: "Gym and much more",
       rate: 4.9,
       distance: 1.8,
+      price: 25,
     ),
     Business(
       id: "2",
@@ -21,15 +22,17 @@ class Businesses
       description: "Gym and much more",
       rate: 4.6,
       distance: 0.5,
+      price: 30,
     ),
     Business(
       id: "3",
       name: "Wall Climb",
       imageUrl:
           "https://cdn.imgbin.com/0/0/21/imgbin-rock-climbing-climbing-wall-simple-cool-rock-climbing-chart-man-mountain-climbing-D8Pw5Y7v2dMfVzxRs6XU3ysFt.jpg",
-      description: "Come to climb with Netanel",
+      description: "Come to climb with Netanel and have fun",
       rate: 5.0,
       distance: 2.1,
+      price: 35,
     ),
     Business(
       id: "4",
@@ -39,6 +42,7 @@ class Businesses
       description: "Gym boutique",
       rate: 4.7,
       distance: 3.2,
+      price: 40,
     ),
     Business(
       id: "5",
@@ -48,6 +52,7 @@ class Businesses
       description: "Surf and Enjoy!",
       rate: 4.3,
       distance: 5.1,
+      price: 45,
     ),
     Business(
       id: "6",
@@ -57,6 +62,7 @@ class Businesses
       description: "Tennis with Cohen",
       rate: 3.9,
       distance: 4.2,
+      price: 50,
     ),
   ];
 

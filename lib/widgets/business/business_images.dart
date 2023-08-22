@@ -5,7 +5,9 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:workit/api/storage_image_business_api.dart';
-import 'package:workit/common/snack_bar_custom.dart';
+import 'package:workit/common/custom_snack_bar.dart.dart';
+import 'package:workit/common/select_image.dart';
+
 
 class BusinessImages extends StatefulWidget {
   const BusinessImages({super.key});  
@@ -85,9 +87,8 @@ class _BusinessImagesState extends State<BusinessImages> {
               const SizedBox(height: 10),
               ElevatedButton( //later change the buttons only bw shown by Admin of this page
                   onPressed: () async {
-                    XFile? xfile =
-                        await imagePicker.pickImage(source: ImageSource.camera);
-                    if (xfile != null) {
+                    File? imageFile = await selectImage(context);
+                    if (imageFile != null) {
                       try {
                         String url = await ImageBusinessApi.uploadToFireBase(                            
                             fileName: "${images.length}.jpg",
@@ -95,9 +96,9 @@ class _BusinessImagesState extends State<BusinessImages> {
                         setState(() {
                           images.add(url);
                         });
-                      } catch (e) {
+                      } catch (e) {                        
                         if (context.mounted) {
-                          SnakcBarCustom.showSnackBar(context, 'Can\'t Upload Image.');
+                          CustomSnackBar.showSnackBar(context, e.toString());                          
                         }
                       }
                     }

@@ -94,9 +94,6 @@ class EmailVerificationPageState extends State<EmailVerificationPage>
             TextButton.icon(
               icon: const Icon(Icons.arrow_circle_left_outlined),
               onPressed: () async {
-                // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //   builder: (context) => const LoginPage(),
-                // ));
                 await firebaseInstance.signOut();
               },
               label: Text("Back to Login", style: theme.textTheme.headlineSmall!.copyWith(color: theme.colorScheme.secondary)),

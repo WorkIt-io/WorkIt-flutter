@@ -1,52 +1,42 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:workit/api/firestore_login_api.dart';
-import 'package:workit/common/snack_bar_custom.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/common/custom_snack_bar.dart.dart';
 import 'package:workit/utils/login_page_helper.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../constant/firebase_instance.dart';
 
-class LoginPage extends StatefulWidget {
+import '../controller/auth_controller.dart';
+
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   bool _isLogin = true;
   bool _isLoading = false;
 
   final _form = GlobalKey<FormState>();
   String _email = '';
-  String _password = '';  
+  String _password = '';
 
-
-  Future<void> onLogin() async {    
+  Future<void> onLogin() async {
     if (_form.currentState!.validate()) {
       _form.currentState!.save();
 
-      try {        
-        setState(() => _isLoading = true);
-        final UserCredential userCredential;
-        if (_isLogin) {
-          userCredential = await firebaseInstance.signInWithEmailAndPassword(
-              email: _email, password: _password);
-
-          if (userCredential.user!.emailVerified) {            
-            await FirestoreLoginApi.setEmailRole(userCredential);
-          }
-        } else {
-          userCredential =
-              await firebaseInstance.createUserWithEmailAndPassword(
-                  email: _email, password: _password);
-
-          await userCredential.user!.sendEmailVerification();
-        }
-      } on FirebaseAuthException catch (error) {
-        SnakcBarCustom.showSnackBar(context, error.message ?? 'Authentication failed.');
+      setState(() => _isLoading = true);
+      try {
+        _isLogin == true
+            ? await ref
+                .read(authControllerProvider)
+                .login(context, _email, _password)
+            : await ref
+                .read(authControllerProvider)
+                .signup(context, _email, _password);
+      } on FirebaseAuthException catch (e) {
+        CustomSnackBar.showSnackBar(context, e.message!);
         setState(() => _isLoading = false);
       }
     }
@@ -108,11 +98,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         if (!_isLoading)
                           TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isLogin = !_isLogin;
-                                });
-                              },
+                              onPressed: () => setState(() {
+                                    _isLogin = !_isLogin;
+                                  }),
                               child: Text(_isLogin
                                   ? 'Create an account'
                                   : 'I already have an account')),
