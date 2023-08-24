@@ -109,15 +109,15 @@ class _BusinessImagesState extends ConsumerState<BusinessImages> {
                         borderRadius: BorderRadius.circular(5.0)),
                   ),
                 ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                  //later change the buttons only bw shown by Admin of this page
-                  onPressed: onUploadImagePress,
-                  child: const Text('Add image')),
-              const SizedBox(height: 6),
-              ElevatedButton(
-                  onPressed: images.isEmpty ? null : onDeleteImagePress,
-                  child: const Text('Remove Last Image')),
+              // const SizedBox(height: 10),
+              // ElevatedButton(
+              //     //later change the buttons only bw shown by Admin of this page
+              //     onPressed: onUploadImagePress,
+              //     child: const Text('Add image')),
+              // const SizedBox(height: 6),
+              // ElevatedButton(
+              //     onPressed: images.isEmpty ? null : onDeleteImagePress,
+              //     child: const Text('Remove Last Image')),
             ],
           );
         } else {

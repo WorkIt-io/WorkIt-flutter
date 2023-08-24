@@ -60,18 +60,9 @@ class _MapWidgetState extends State<MapWidget> {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.connectionState == ConnectionState.done) {
           return Container(
-<<<<<<< HEAD:lib/widgets/business/location_widget.dart
-            height: 300,
-            width: 400,
-            margin: const EdgeInsets.only(top: 30),            
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-            ),
-=======
             height: 150,
             width: double.infinity,
             margin: const EdgeInsets.only(top: 5),
->>>>>>> 061914b (feat: new design to business detail page):lib/widgets/business/map_widget.dart
             child: ClipRRect(
               borderRadius: BorderRadius.circular(5),
               child: CachedNetworkImage(
