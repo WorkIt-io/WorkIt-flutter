@@ -1,18 +1,16 @@
-
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:location/location.dart';
 
-class LocationWidget extends StatefulWidget {
-  const LocationWidget({super.key});
+class MapWidget extends StatefulWidget {
+  const MapWidget({super.key});
 
   @override
-  State<LocationWidget> createState() => _LocationWidgetState();
+  State<MapWidget> createState() => _MapWidgetState();
 }
 
-class _LocationWidgetState extends State<LocationWidget> {
+class _MapWidgetState extends State<MapWidget> {
   LocationData? _locationData;
   late Future<String> _future;
 
@@ -50,7 +48,7 @@ class _LocationWidgetState extends State<LocationWidget> {
       }
     }
 
-    _locationData = await location.getLocation();    
+    _locationData = await location.getLocation();
   }
 
   @override
@@ -62,14 +60,20 @@ class _LocationWidgetState extends State<LocationWidget> {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.connectionState == ConnectionState.done) {
           return Container(
+<<<<<<< HEAD:lib/widgets/business/location_widget.dart
             height: 300,
             width: 400,
             margin: const EdgeInsets.only(top: 30),            
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
             ),
+=======
+            height: 150,
+            width: double.infinity,
+            margin: const EdgeInsets.only(top: 5),
+>>>>>>> 061914b (feat: new design to business detail page):lib/widgets/business/map_widget.dart
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(5),
               child: CachedNetworkImage(
                 imageUrl: snapshot.data!,
                 fit: BoxFit.cover,

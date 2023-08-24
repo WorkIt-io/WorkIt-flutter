@@ -70,7 +70,6 @@ class _BusinessImagesState extends ConsumerState<BusinessImages> {
             children: [
               Container(
                 alignment: Alignment.center,
-                margin: const EdgeInsets.all(8),
                 height: 300,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -87,16 +86,13 @@ class _BusinessImagesState extends ConsumerState<BusinessImages> {
                           currentPageIndex = index;
                         }),
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: CachedNetworkImage(
-                                imageUrl: images[index],
-                                placeholder: (context, url) => Image.asset(
-                                    'assets/images/workit_logo_no_bg.png'),
-                                fit: BoxFit.cover,
-                              ),
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(0),
+                            child: CachedNetworkImage(
+                              imageUrl: images[index],
+                              placeholder: (context, url) => Image.asset(
+                                  'assets/images/workit_logo_no_bg.png'),
+                              fit: BoxFit.cover,
                             ),
                           );
                         },
