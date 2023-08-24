@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/business.dart';
 
-final imageRepositoryProvider = Provider<ImageRepository>((ref) {  
+final imageRepositoryProvider = Provider<ImageRepository>((ref) {
   return ImageRepository(FirebaseStorage.instance, FirebaseAuth.instance);
 });
 
@@ -31,7 +31,7 @@ class ImageRepository {
     ListResult listResult = await _firebaseStorage
         .ref('businesses')
         .child(businessId)
-        .child('images')
+        // .child('images')
         .list();
 
     for (Reference item in listResult.items) {
@@ -47,7 +47,7 @@ class ImageRepository {
     ListResult listResult = await _firebaseStorage
         .ref('businesses')
         .child(businessId)
-        .child('images')
+        // .child('images')
         .list();
 
     final imageRef = listResult.items.last;
