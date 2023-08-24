@@ -6,9 +6,11 @@ import '../../../common/text_icon.dart';
 import '../../../models/business.dart';
 
 class BusinessRow extends StatelessWidget {
-  const BusinessRow(this.bussines, {super.key});
+  const BusinessRow(this.bussines, {required this.showDistance, super.key});
 
-  final List<Business> bussines;
+
+  final bool showDistance;
+  final List<Business> bussines;  
 
   @override
   Widget build(BuildContext context) {

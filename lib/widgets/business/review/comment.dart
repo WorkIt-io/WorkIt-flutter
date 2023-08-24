@@ -25,7 +25,7 @@ class Comment extends ConsumerWidget {
 
   void onDismiss(WidgetRef ref)
   {
-    ref.read(reviewProvider.notifier).deleteReview(review);
+    ref.read(reviewProvider.notifier).deleteReview();
   }
 
   Widget _buildStars(int rate) {

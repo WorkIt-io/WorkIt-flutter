@@ -6,11 +6,11 @@ class Review{
   final String text;
   final int rate;
 
-  Review(this.id, this.title, this.text, this.rate);
+  Review({required this.id, required this.title, required this.text, required this.rate});
 
   factory Review.fromMap(Map<String, dynamic> map)
   {
-    return Review(map['id'], map['title'], map['text'], map['rate']);
+    return Review(id: map['id'], title: map['title'],text: map['text'],rate: map['rate']);
   } 
 
   Map<String, dynamic> toMap()
