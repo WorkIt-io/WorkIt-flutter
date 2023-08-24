@@ -46,7 +46,6 @@ class ImageRepository {
     ListResult listResult = await _firebaseStorage
         .ref('businesses')
         .child(businessId)
-        .child('images')
         .list();
 
     final imageRef = listResult.items.last;
