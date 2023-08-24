@@ -11,6 +11,7 @@ class CurrentTheme {
   ThemeData get themeData {
     return ThemeData().copyWith(      
       appBarTheme: const AppBarTheme().copyWith(
+        titleTextStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 24, color: Color.fromARGB(221, 21, 16, 16)),
         backgroundColor: colorScheme.secondaryContainer,
         foregroundColor: colorScheme.onSecondaryContainer,         
       ),

@@ -49,6 +49,8 @@ dependencies:
   flutter_dotenv: ^5.1.0
   location: ^5.0.3
   firebase_messaging: ^14.6.5
+  http: ^0.13.6
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +78,7 @@ flutter:
   assets:
     - assets/images/workit_logo.jpeg
     - assets/images/workit_logo_no_bg.png
+    - assets/images/blank-profile.png
     - .env
   
 

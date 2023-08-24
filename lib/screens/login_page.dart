@@ -15,10 +15,10 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
+  final _form = GlobalKey<FormState>();
+
   bool _isLogin = true;
   bool _isLoading = false;
-
-  final _form = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
 
@@ -47,6 +47,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         body: SingleChildScrollView(
+          reverse: true,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -67,13 +68,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        if (!_isLogin)
+                          TextFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'Full Name'),
+                            keyboardType: TextInputType.name,
+                            autocorrect: false,
+                            validator: LoginPageHelper.validateFullName,
+                            onSaved: (newValue) => _email = newValue!,
+                          ),
                         TextFormField(
                           decoration: const InputDecoration(labelText: 'email'),
                           keyboardType: TextInputType.emailAddress,
                           autocorrect: false,
                           textCapitalization: TextCapitalization.none,
-                          validator: (value) =>
-                              LoginPageHelper.validateEmail(value),
+                          validator: LoginPageHelper.validateEmail,
                           onSaved: (newValue) => _email = newValue!,
                         ),
                         TextFormField(
@@ -81,8 +90,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             labelText: 'Password',
                           ),
                           obscureText: true,
-                          validator: (value) =>
-                              LoginPageHelper.validatePassword(value),
+                          validator: LoginPageHelper.validatePassword,
                           onSaved: (newValue) => _password = newValue!,
                         ),
                         const SizedBox(height: 16),

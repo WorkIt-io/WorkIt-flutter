@@ -9,12 +9,11 @@ class SearchTextFiled extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: TextField(             
+      child: TextField(                                   
         style: const TextStyle(fontSize: 20),         
         decoration: InputDecoration(
           hintText: "Search",                            
           hintStyle: const TextStyle(color: Colors.black, fontSize: 20),
-          //contentPadding: const EdgeInsets.symmetric(horizontal: 10),              
           suffixIcon: const Icon(Icons.search),
           fillColor: Colors.white70,
           filled: true,
