@@ -32,6 +32,7 @@ class BusinessModel {
   final String category;
   final String address;
   final String phoneNumber;
+  final List<String>? imagesId;
 
   BusinessModel(
       {required this.id,
@@ -42,14 +43,16 @@ class BusinessModel {
       required this.rate,
       required this.location,
       required this.category,
-      required this.address
+      required this.address,
+      this.imagesId
       });
 
   factory BusinessModel.fromMap(Map<String, dynamic> map)
   {
     
     return BusinessModel(id: map['id'], name: map['name'], phoneNumber: map['phone'] ,price: map['price']
-    , description: map['description'], rate: map['rate'], location: LatLng(map['lat'], map['lng']), category: map['category'], address: map['address']
+    , description: map['description'], rate: map['rate'], location: LatLng(map['lat'], map['lng']), category: map['category'], address: map['address'],
+    imagesId: map['images'] != null ? List.from(map['images'] as List<String>) : null
     );
   }
 
@@ -65,7 +68,8 @@ class BusinessModel {
       'lat': location.latitude,
       'lng': location.longitude,
       'category': category,
-      'address': address
+      'address': address,
+      'images': imagesId,
     };
   }
 }

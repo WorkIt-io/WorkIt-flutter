@@ -48,12 +48,12 @@ class _BusinessImagesState extends ConsumerState<BusinessImages> {
   }
 
   Future<void> onDeleteImagePress() async {
-    await ref.read(imageControllerProvider).removeLastImage();
+    await ref.read(imageControllerProvider).removeLastImage(currentPageIndex);
     setState(() {
+      images.removeAt(currentPageIndex);
       currentPageIndex = currentPageIndex == images.length - 1
           ? currentPageIndex - 1
-          : currentPageIndex;
-      images.removeLast();
+          : currentPageIndex;      
     });
   }
 

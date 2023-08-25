@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../providers/business.dart';
 
@@ -14,12 +15,13 @@ class ImageRepository {
   ImageRepository(this._firebaseStorage, this._firebase);
 
   final FirebaseStorage _firebaseStorage;
-  final FirebaseAuth _firebase;
+  final FirebaseAuth _firebase;  
 
-  Future<String> uploadBussinesImage(File image) async {
-    final businessId = selectedBusiness!.id;
+  Future<String> uploadBussinesImage(File image, String imageId) async {
+    final String businessId = selectedBusiness!.id;    
+
     var ref =
-        _firebaseStorage.ref('businesses').child(businessId).child('images');
+        _firebaseStorage.ref('businesses').child(businessId).child('images').child(imageId);
     await ref.putFile(image);
     String downloadUrl = await ref.getDownloadURL();
     return downloadUrl;
@@ -28,9 +30,11 @@ class ImageRepository {
   Future<List<String>> retriveAllImages() async {
     List<String> downloadUrl = [];
     final businessId = selectedBusiness!.id;
+
     ListResult listResult = await _firebaseStorage
         .ref('businesses')
         .child(businessId)
+        .child('images')        
         .list();
 
     for (Reference item in listResult.items) {
@@ -41,15 +45,16 @@ class ImageRepository {
     return downloadUrl;
   }
 
-  Future removeLastImage() async {
+  Future removeImage(String imageId) async {
     final businessId = selectedBusiness!.id;
-    ListResult listResult = await _firebaseStorage
+
+    final ref = _firebaseStorage
         .ref('businesses')
         .child(businessId)
-        .list();
-
-    final imageRef = listResult.items.last;
-    await imageRef.delete();
+        .child('images')
+        .child(imageId);
+    
+    await ref.delete();    
   }
 
   Future<String> uploadProfileUserImage(File image) async {
