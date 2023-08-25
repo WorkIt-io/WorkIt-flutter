@@ -9,7 +9,8 @@ import '../../../models/review.dart';
 import '../../../utils/review_widget_helper.dart';
 
 class ReviewDialog extends ConsumerStatefulWidget {
-  const ReviewDialog({super.key,this.isUpdate = false, this.title, this.text, this.rate});
+  const ReviewDialog(
+      {super.key, this.isUpdate = false, this.title, this.text, this.rate});
 
   final bool isUpdate;
   final String? title;
@@ -38,25 +39,30 @@ class _ReviewDialogState extends ConsumerState<ReviewDialog> {
   Future<void> submitForm() async {
     if (formKey.currentState!.validate() && selectedRate != 0) {
       formKey.currentState!.save();
-      Review review = Review(firebaseInstance.currentUser!.uid, titleText,
-          reviewText, selectedRate);
+
       try {
-        !widget.isUpdate ? await ref.read(reviewProvider.notifier).postReview(review) : await ref.read(reviewProvider.notifier).updateReview(review);
+        !widget.isUpdate
+            ? await ref
+                .read(reviewProvider.notifier)
+                .postReview(titleText, reviewText, selectedRate)
+            : await ref
+                .read(reviewProvider.notifier)
+                .updateReview(titleText, reviewText, selectedRate);
+                
         if (context.mounted) {
-          CustomSnackBar.showSnackBar(context, !widget.isUpdate ? "Review Updated" : "Review Upload");
+          CustomSnackBar.showSnackBar(
+              context, widget.isUpdate ? "Review Updated" : "Review Upload");
         }
       } catch (error) {
         CustomSnackBar.showSnackBar(context, error.toString());
-
       } finally {
         Navigator.of(context).pop();
         formKey.currentState!.reset();
       }
-    }
-    else{
+    } else {
       setState(() {
         showError = true;
-      });            
+      });
     }
   }
 
@@ -84,9 +90,8 @@ class _ReviewDialogState extends ConsumerState<ReviewDialog> {
                       color: Colors.orangeAccent),
                 ),
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [...List.generate(
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  ...List.generate(
                     5,
                     (index) => IconButton(
                       onPressed: () => setState(() => selectedRate = index + 1),
@@ -96,9 +101,12 @@ class _ReviewDialogState extends ConsumerState<ReviewDialog> {
                           : Colors.grey[400],
                     ),
                   ),
-                  if (showError) const Icon(Icons.error_outline, color: Colors.red,)
-                  ]
-                ),
+                  if (showError)
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                    )
+                ]),
                 const SizedBox(height: 20),
                 TextFormField(
                   initialValue: titleText,
@@ -120,7 +128,8 @@ class _ReviewDialogState extends ConsumerState<ReviewDialog> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                    onPressed: submitForm, child: Text(widget.isUpdate == false ? 'Save' : 'Update')),
+                    onPressed: submitForm,
+                    child: Text(widget.isUpdate == false ? 'Save' : 'Update')),
               ],
             ),
           ),

@@ -3,19 +3,21 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:workit/api/storage_image_business_api.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
+import 'package:workit/common/loader.dart';
 import 'package:workit/common/select_image.dart';
+import 'package:workit/controller/image_controller.dart';
 
-class BusinessImages extends StatefulWidget {
+class BusinessImages extends ConsumerStatefulWidget {
   const BusinessImages({super.key});
 
   @override
-  State<BusinessImages> createState() => _BusinessImagesState();
+  ConsumerState<BusinessImages> createState() => _BusinessImagesState();
 }
 
-class _BusinessImagesState extends State<BusinessImages> {
+class _BusinessImagesState extends ConsumerState<BusinessImages> {
   List<String> images = [];
   final ImagePicker imagePicker = ImagePicker();
   int currentPageIndex = 0;
@@ -24,7 +26,35 @@ class _BusinessImagesState extends State<BusinessImages> {
   @override
   void initState() {
     super.initState();
-    retriveAllImages = ImageBusinessApi.retriveAllImages();
+    retriveAllImages = ref.read(imageControllerProvider).retriveAllImages();
+  }
+
+  Future<void> onUploadImagePress() async {
+    File? imageFile = await selectImage(context);
+    if (imageFile != null) {
+      try {
+        String url = await ref
+            .read(imageControllerProvider)
+            .uploadBussinesImage(imageFile);
+        setState(() {
+          images.add(url);
+        });
+      } catch (e) {
+        if (context.mounted) {
+          CustomSnackBar.showSnackBar(context, e.toString());
+        }
+      }
+    }
+  }
+
+  Future<void> onDeleteImagePress() async {
+    await ref.read(imageControllerProvider).removeLastImage();
+    setState(() {
+      currentPageIndex = currentPageIndex == images.length - 1
+          ? currentPageIndex - 1
+          : currentPageIndex;
+      images.removeLast();
+    });
   }
 
   @override
@@ -33,18 +63,13 @@ class _BusinessImagesState extends State<BusinessImages> {
       future: retriveAllImages,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-              child: Container(
-                  margin: const EdgeInsets.all(8),
-                  padding: const EdgeInsets.all(8),
-                  child: const CircularProgressIndicator()));
+          return const Loader();
         } else if (snapshot.hasData) {
           images = snapshot.data!;
           return Column(
             children: [
               Container(
                 alignment: Alignment.center,
-                margin: const EdgeInsets.all(8),
                 height: 300,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -61,16 +86,13 @@ class _BusinessImagesState extends State<BusinessImages> {
                           currentPageIndex = index;
                         }),
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: CachedNetworkImage(
-                                imageUrl: images[index],
-                                placeholder: (context, url) => Image.asset(
-                                    'assets/images/workit_logo_no_bg.png'),
-                                fit: BoxFit.cover,
-                              ),
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(0),
+                            child: CachedNetworkImage(
+                              imageUrl: images[index],
+                              placeholder: (context, url) => Image.asset(
+                                  'assets/images/workit_logo_no_bg.png'),
+                              fit: BoxFit.cover,
                             ),
                           );
                         },
@@ -87,41 +109,15 @@ class _BusinessImagesState extends State<BusinessImages> {
                         borderRadius: BorderRadius.circular(5.0)),
                   ),
                 ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                  //later change the buttons only bw shown by Admin of this page
-                  onPressed: () async {
-                    File? imageFile = await selectImage(context);
-                    if (imageFile != null) {
-                      try {
-                        String url = await ImageBusinessApi.uploadToFireBase(fileName: "${images.length}.jpg", image: imageFile);                        
-                        setState(() {
-                          images.add(url);
-                        });
-                      } catch (e) {                        
-                        if (context.mounted) {
-                          CustomSnackBar.showSnackBar(context, e.toString());                          
-                        }
-                      }
-                    }
-                  },
-                  child: const Text('Add image')),
-              const SizedBox(height: 6),
-              ElevatedButton(
-                  onPressed: images.isEmpty
-                      ? null
-                      : () async {
-                          await ImageBusinessApi.removeImage(
-                              fileIdToRemove: images.length - 1);
-                          setState(() {
-                            currentPageIndex =
-                                currentPageIndex == images.length - 1
-                                    ? currentPageIndex - 1
-                                    : currentPageIndex;
-                            images.removeLast();
-                          });
-                        },
-                  child: const Text('Remove Last Image')),
+              // const SizedBox(height: 10),
+              // ElevatedButton(
+              //     //later change the buttons only bw shown by Admin of this page
+              //     onPressed: onUploadImagePress,
+              //     child: const Text('Add image')),
+              // const SizedBox(height: 6),
+              // ElevatedButton(
+              //     onPressed: images.isEmpty ? null : onDeleteImagePress,
+              //     child: const Text('Remove Last Image')),
             ],
           );
         } else {

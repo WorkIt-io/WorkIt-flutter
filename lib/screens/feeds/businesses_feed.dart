@@ -12,12 +12,15 @@ class BusinessesFeed extends StatefulWidget {
 }
 
 class BusinessesFeedState extends State<BusinessesFeed> {
+  bool showDistance = false;
+
   @override
   Widget build(BuildContext context) {
     final bussines = Businesses().businessesList;
     var theme = Theme.of(context);
 
     return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -33,7 +36,7 @@ class BusinessesFeedState extends State<BusinessesFeed> {
                     color: theme.colorScheme.primary,
                     fontWeight: FontWeight.bold)),
           ),
-          BusinessRow(bussines.reversed.toList()),
+          BusinessRow(bussines.reversed.toList(), showDistance: showDistance,),
           const SizedBox(height: 20),
           const Divider(),
           Padding(
@@ -45,7 +48,14 @@ class BusinessesFeedState extends State<BusinessesFeed> {
           ),
           BusinessRow(bussines
               .where((element) => int.parse(element.id) % 2 == 0)
-              .toList()),
+              .toList(), showDistance: showDistance,),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(onPressed: () => showDistance= true, child: const Text("get Location")),
+            ],
+          ),
         ],
       ),
     );
