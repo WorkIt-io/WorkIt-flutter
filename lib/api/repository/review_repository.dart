@@ -79,7 +79,7 @@ class ReviewRepository {
     }
   }
 
-  Future<Review> deleteReview() async {
+  Future<void> deleteReview() async {
     final reviewId = _firebase.currentUser!.uid;
     final businessId = selectedBusiness!.id;
 
@@ -91,10 +91,8 @@ class ReviewRepository {
 
     final doc = await ref.get();
 
-    if (doc.exists) {
-      final review = Review.fromMap(doc.data()!);
-      await ref.delete();
-      return review;
+    if (doc.exists) {      
+      await ref.delete();      
     } else {
       throw Exception("no such review");
     }

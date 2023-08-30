@@ -1,26 +1,26 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-class Business {
-  final String id;
-  final String name;
-  final String imageUrl;
-  final String description;
-  final double rate;
-  final double distance;
-  LocationData? location; // when adding business we add location.
-  final int price;
+// class Business {
+//   final String id;
+//   final String name;
+//   final String imageUrl;
+//   final String description;
+//   final double rate;
+//   final double distance;
+//   LocationData? location; // when adding business we add location.
+//   final int price;
 
-  Business({
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    required this.description,
-    required this.rate,
-    required this.distance,
-    required this.price,
-  });
-}
+//   Business({
+//     required this.id,
+//     required this.name,
+//     required this.imageUrl,
+//     required this.description,
+//     required this.rate,
+//     required this.distance,
+//     required this.price,
+//   });
+// }
 
 class BusinessModel {
   final String id;
@@ -32,6 +32,7 @@ class BusinessModel {
   final String category;
   final String address;
   final String phoneNumber;
+  List<String> images;
 
   BusinessModel(
       {required this.id,
@@ -42,14 +43,16 @@ class BusinessModel {
       required this.rate,
       required this.location,
       required this.category,
-      required this.address
+      required this.address,
+      this.images = const []
       });
 
   factory BusinessModel.fromMap(Map<String, dynamic> map)
   {
     
     return BusinessModel(id: map['id'], name: map['name'], phoneNumber: map['phone'] ,price: map['price']
-    , description: map['description'], rate: map['rate'], location: LatLng(map['lat'], map['lng']), category: map['category'], address: map['address']
+    , description: map['description'], rate: map['rate'], location: LatLng(map['lat'], map['lng']), category: map['category'], address: map['address'],
+    images: List<String>.from(map['images'])
     );
   }
 
@@ -65,7 +68,8 @@ class BusinessModel {
       'lat': location.latitude,
       'lng': location.longitude,
       'category': category,
-      'address': address
+      'address': address,
+      'images': images,
     };
   }
 }

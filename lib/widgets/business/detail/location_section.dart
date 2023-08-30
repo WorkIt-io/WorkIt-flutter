@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:workit/widgets/business/map_widget.dart';
+
+import 'map_widget.dart';
 
 class LocationSection extends StatefulWidget {
   final String address;
@@ -30,7 +31,7 @@ class _LocationSectionState extends State<LocationSection> {
             ),
           ),
           const SizedBox(height: 10),
-          MapWidget(),
+          const MapWidget(),
           Text(
             widget.address,
             style: const TextStyle(

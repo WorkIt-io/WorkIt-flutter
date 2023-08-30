@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 
 final locationRepositoryProvider = Provider<LocationRepository>((ref) {
   return LocationRepository();
@@ -57,6 +58,35 @@ class LocationRepository
   return response;
   }
 
+  Future<String> getStaticMapUrlOfCurrentLocation()
+  async {
+    final LocationData locationData = await _askPermission();
+    final double lat = locationData.latitude!;
+    final double lng = locationData.longitude!;
 
+    return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=13&size=400x400&markers=color:red%7Clabel:S%7C$lat,$lng&key=${dotenv.env['API_KEY']}";
+  }
+  
+  Future<LocationData> _askPermission() async {
+    Location location = Location();
+
+    bool serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        throw Exception("open Location Service");
+      }
+    }
+
+    PermissionStatus permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        throw Exception("Accept Permission");
+      }
+    }
+
+    return await location.getLocation();
+  }
 
 }

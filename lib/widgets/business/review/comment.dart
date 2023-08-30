@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/constant/firebase_instance.dart';
 import 'package:workit/models/review.dart';
-import 'package:workit/providers/review.dart';
+import 'package:workit/providers/review_notifier.dart';
 import 'package:workit/widgets/business/review/review_dialog.dart';
 
 class Comment extends ConsumerWidget {
@@ -23,9 +23,9 @@ class Comment extends ConsumerWidget {
     );
   }
 
-  void onDismiss(WidgetRef ref)
+  Future<void> onDismiss(WidgetRef ref) async
   {
-    ref.read(reviewProvider.notifier).deleteReview();
+    await ref.read(reviewStateNotifierProvider.notifier).deleteReview();
   }
 
   Widget _buildStars(int rate) {
@@ -72,7 +72,7 @@ class Comment extends ConsumerWidget {
 
     Widget myComment = Dismissible(
         key: ValueKey(review.id), 
-        onDismissed: (direction) => onDismiss(ref),       
+        onDismissed: (direction) async => await onDismiss(ref),       
         child: GestureDetector(
           onTap: () => showEditReviewDialog(context),
           child: otherComments,
