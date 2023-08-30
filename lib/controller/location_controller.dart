@@ -9,6 +9,8 @@ final locationControllerProvider = Provider<LocationController>((ref) {
   return LocationController(locationRepository);
 });
 
+
+
 class LocationController {
   LocationController(this._locationRepository);
 
@@ -55,5 +57,10 @@ class LocationController {
     }
 
     return null;
+  }
+
+  Future<String> getStaticMapUrlFromLocation()
+  {
+    return _locationRepository.getStaticMapUrlOfCurrentLocation();
   }
 }

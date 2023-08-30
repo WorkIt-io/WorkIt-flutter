@@ -1,22 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/providers/businesses_notifier.dart';
 import 'package:workit/widgets/home/business/business_row.dart';
 
-import '../../constant/dummy_data.dart';
+import '../../models/business.dart';
 import '../../widgets/home/search_text_filed.dart';
 
-class BusinessesFeed extends StatefulWidget {
+class BusinessesFeed extends ConsumerStatefulWidget {
   const BusinessesFeed({super.key});
 
   @override
-  State<BusinessesFeed> createState() => BusinessesFeedState();
+  ConsumerState<BusinessesFeed> createState() => BusinessesFeedState();
 }
 
-class BusinessesFeedState extends State<BusinessesFeed> {
+class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
   bool showDistance = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    if(ref.read(businessesStateNotifierProvider).isEmpty) {
+      ref.read(businessesStateNotifierProvider.notifier).getAllBusinessFromDatabase();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bussines = Businesses().businessesList;
+    List<BusinessModel> businesses = ref.watch(businessesStateNotifierProvider); 
+       
     var theme = Theme.of(context);
 
     return SingleChildScrollView(
@@ -30,13 +42,16 @@ class BusinessesFeedState extends State<BusinessesFeed> {
           const SizedBox(height: 10),
           const Divider(),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),            
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
             child: Text("Best Rate",
                 style: theme.textTheme.headlineMedium!.copyWith(
                     color: theme.colorScheme.primary,
                     fontWeight: FontWeight.bold)),
           ),
-          BusinessRow(bussines.reversed.toList(), showDistance: showDistance,),
+          BusinessRow(
+            businesses,
+            showDistance: showDistance,
+          ),
           const SizedBox(height: 20),
           const Divider(),
           Padding(
@@ -46,14 +61,17 @@ class BusinessesFeedState extends State<BusinessesFeed> {
                     color: theme.colorScheme.primary,
                     fontWeight: FontWeight.bold)),
           ),
-          BusinessRow(bussines
-              .where((element) => int.parse(element.id) % 2 == 0)
-              .toList(), showDistance: showDistance,),
+          BusinessRow(
+            businesses,
+            showDistance: showDistance,
+          ),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(onPressed: () => showDistance= true, child: const Text("get Location")),
+              ElevatedButton(
+                  onPressed: () => showDistance = true,
+                  child: const Text("get Location")),
             ],
           ),
         ],

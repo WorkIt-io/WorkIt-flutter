@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:workit/widgets/business/business_images.dart';
-import 'package:workit/widgets/business/location_section.dart';
-import 'package:workit/widgets/business/opening_times.dart';
+import 'package:workit/widgets/business/detail/business_images.dart';
+import 'package:workit/widgets/business/detail/location_section.dart';
+import 'package:workit/widgets/business/detail/opening_times.dart';
+import 'package:workit/widgets/business/detail/text_section.dart';
 import 'package:workit/widgets/business/review/reviews_business.dart';
-import 'package:workit/widgets/business/text_section.dart';
-import 'package:workit/widgets/business/map_widget.dart';
 
 import '../models/business.dart';
 
 class BusinessDeatilScreen extends StatefulWidget {
   const BusinessDeatilScreen({super.key, required this.business});
 
-  final Business business;
+  final BusinessModel business;
 
   @override
   State<BusinessDeatilScreen> createState() => _BusinessDeatilScreenState();
@@ -47,16 +46,17 @@ class _BusinessDeatilScreenState extends State<BusinessDeatilScreen> {
             // About Section
             TextSection(
               "About",
-              "some description about the place.\nThis should be fetched from the DB",
+              widget.business.description,
               theme,
             ),
+
             const Divider(),
 
             // Opening Times
             OpeningTimes(times, theme),
             const Divider(),
 
-            LocationSection("Some address 123, Tel Aviv", theme),
+            LocationSection(widget.business.address, theme),
             const Divider(),
 
             const SizedBox(height: 20),
