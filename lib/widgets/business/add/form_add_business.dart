@@ -1,15 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
-import 'package:workit/common/select_image.dart';
 import 'package:workit/constant/business_category.dart';
-import 'package:workit/controller/business_controller.dart';
-import 'package:workit/controller/image_controller.dart';
 import 'package:workit/models/business.dart';
+import 'package:workit/providers/businesses_notifier.dart';
 import 'package:workit/utils/form_add_business_helper.dart';
 import 'package:workit/widgets/business/add/text_field_add_business.dart';
 
@@ -24,7 +20,7 @@ class FormAddBusiness extends ConsumerStatefulWidget {
 
 class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  File? profileImage;
+  
 
   String? _selectedCategory;
   LatLng? _location;
@@ -37,14 +33,9 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
   TextEditingController addressController = TextEditingController();
 
   bool isReverse = false;
+  AutovalidateMode autoValidate = AutovalidateMode.disabled;
 
-  ImageProvider<Object> getProfileImage() {
-    if (profileImage == null) {
-      return const AssetImage("assets/images/blank-profile.png");
-    } else {
-      return FileImage(profileImage!);
-    }
-  }
+
 
   void changeReverse(bool toChange) {
     setState(() {
@@ -55,11 +46,6 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
   Future<void> onSave() async {
     if (formkey.currentState!.validate()) {
       formkey.currentState!.save();
-
-      if (profileImage == null) {
-        CustomSnackBar.showSnackBar(context, "Add Profile Picture");
-        return;
-      }
 
       if (_location == null) {
         CustomSnackBar.showSnackBar(context, "No Location");
@@ -90,12 +76,8 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
 
       try {
         await ref
-            .read(businessControllerProvider)
-            .addBusinessToDatabase(business);
-
-        await ref
-            .read(imageControllerProvider)
-            .uploadProfileUserImage(profileImage!);
+            .read(businessesStateNotifierProvider.notifier)
+            .addBusiness(business);
 
         if (mounted) Navigator.pop(context);
         if (mounted) CustomSnackBar.showSnackBar(context, "Business Upload");
@@ -103,9 +85,10 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
         if (mounted) Navigator.pop(context);
         CustomSnackBar.showSnackBar(context, e.toString());
       }
-    } else {
-      await Future.delayed(const Duration(seconds: 5))
-          .then((value) => formkey.currentState!.reset());
+    }
+    else
+    {
+      autoValidate = AutovalidateMode.always;
     }
   }
 
@@ -118,26 +101,10 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Form(
           key: formkey,
+          autovalidateMode: autoValidate,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              Stack(
-                children: [
-                  GestureDetector(
-                      onTap: () async {
-                        File? image = await selectImage(context);
-                        if (image != null) {
-                          setState(() => profileImage = image);
-                        }
-                      },
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundImage: getProfileImage(),
-                      )),
-                  const Positioned(
-                      right: 5, bottom: 0, child: Icon(Icons.add_a_photo)),
-                ],
-              ),
+            children: [             
               Flexible(
                 fit: FlexFit.loose,
                 child: TextFieldAddBussines(

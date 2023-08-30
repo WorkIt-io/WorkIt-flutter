@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:workit/providers/business.dart';
 import 'package:workit/screens/businesses_detail_screen.dart';
@@ -6,29 +7,29 @@ import '../../../common/text_icon.dart';
 import '../../../models/business.dart';
 
 class BusinessRow extends StatelessWidget {
-  const BusinessRow(this.bussines, {required this.showDistance, super.key});
+  const BusinessRow(this.businesses, {required this.showDistance, super.key});
 
 
   final bool showDistance;
-  final List<Business> bussines;  
+  final List<BusinessModel> businesses;  
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return SizedBox(
       height: 240,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: bussines.length,
+        itemCount: businesses.length,
         itemBuilder: (context, index) {
           var theme = Theme.of(context);
           return GestureDetector(
             onTap: () {
-              selectedBusiness = bussines[index];
+              selectedBusiness = businesses[index];
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>
-                      BusinessDeatilScreen(business: bussines[index]),
+                      BusinessDeatilScreen(business: businesses[index]),
                 ),
 
               );
@@ -45,8 +46,16 @@ class BusinessRow extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(
-                    bussines[index].imageUrl,
+                  businesses[index].images.isEmpty ?
+                  Image.asset("assets/images/workit_logo_no_bg.png",
+                    fit: BoxFit.fill,                    
+                    height: 100,
+                    width: double.infinity,
+                  ) 
+                  :
+                  CachedNetworkImage(
+                    imageUrl: businesses[index].images.first,
+                    placeholder: (context, url) => Image.asset("assets/images/workit_logo_no_bg.png"),
                     fit: BoxFit.fill,
                     height: 100,
                     width: double.infinity,
@@ -59,7 +68,7 @@ class BusinessRow extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          bussines[index].name,
+                          businesses[index].name,
                           maxLines: 1,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
@@ -70,12 +79,12 @@ class BusinessRow extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          bussines[index].description,
+                          businesses[index].description,
                           maxLines: 2,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              color: theme.colorScheme.secondary, fontSize: 18),
+                              color: theme.colorScheme.secondary, fontSize: 16),
                         )
                       ],
                     ),
@@ -87,7 +96,7 @@ class BusinessRow extends StatelessWidget {
                     child: Row(
                       children: [
                         TextIcon(
-                          text: bussines[index].rate.toString(),
+                          text: businesses[index].rate.toString(),
                           icon: const Icon(
                             Icons.star,
                             color: Colors.yellow,
@@ -99,7 +108,7 @@ class BusinessRow extends StatelessWidget {
                               width: 20,
                               color: Colors.black,
                             )),
-                        Text("${bussines[index].distance} km"),
+                        //Text("${businesses[index].distance} km"),
                         const Spacer(),
                         Container(
                           padding: const EdgeInsets.only(
@@ -111,7 +120,7 @@ class BusinessRow extends StatelessWidget {
                             color: Colors.blueAccent,
                           ),
                           child: TextIcon(
-                            text: bussines[index].price.toString(),
+                            text: businesses[index].price.toString(),
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
