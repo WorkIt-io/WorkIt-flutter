@@ -1,7 +1,7 @@
 import 'dart:math';
 
 class HaversineFormula {
-  double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
+  static double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
     const R = 6371.0; // Radius of the Earth in kilometers
     var dLat = _degreesToRadians(lat2 - lat1);
     var dLon = _degreesToRadians(lon2 - lon1);
@@ -14,7 +14,7 @@ class HaversineFormula {
     return R * c; // returns distance in kilometers
   }
 
-  double _degreesToRadians(double degrees) {
+  static double _degreesToRadians(double degrees) {
     return degrees * pi / 180;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/providers/businesses_notifier.dart';
+import 'package:workit/providers/user_location_notifier.dart';
 import 'package:workit/widgets/home/business/business_row.dart';
 
 import '../../models/business.dart';
@@ -16,19 +17,20 @@ class BusinessesFeed extends ConsumerStatefulWidget {
 class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
   bool showDistance = false;
 
-
   @override
   void initState() {
     super.initState();
-    if(ref.read(businessesStateNotifierProvider).isEmpty) {
-      ref.read(businessesStateNotifierProvider.notifier).getAllBusinessFromDatabase();
+    if (ref.read(businessesStateNotifierProvider).isEmpty) {
+      ref
+          .read(businessesStateNotifierProvider.notifier)
+          .getAllBusinessFromDatabase();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<BusinessModel> businesses = ref.watch(businessesStateNotifierProvider); 
-       
+    List<BusinessModel> businesses = ref.watch(businessesStateNotifierProvider);
+
     var theme = Theme.of(context);
 
     return SingleChildScrollView(
@@ -70,7 +72,10 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                  onPressed: () => showDistance = true,
+                  onPressed: () {
+                    setState(() => showDistance = !showDistance);
+                    ref.read(userLocationNotifierProvider.notifier).getCurrentLocation();
+                  },
                   child: const Text("get Location")),
             ],
           ),
@@ -79,3 +84,4 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
     );
   }
 }
+

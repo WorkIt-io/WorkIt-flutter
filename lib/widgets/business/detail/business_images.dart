@@ -91,6 +91,7 @@ class _BusinessImagesState extends ConsumerState<BusinessImages> {
 
     showModalBottomSheet(
         context: context,
+        isDismissible: true,
         builder: (btx) {
           return StatefulBuilder(
             builder: (context, setState) {

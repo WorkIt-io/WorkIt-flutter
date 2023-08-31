@@ -81,6 +81,7 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
 
         if (mounted) Navigator.pop(context);
         if (mounted) CustomSnackBar.showSnackBar(context, "Business Upload");
+        formkey.currentState!.reset();
       } catch (e) {
         if (mounted) Navigator.pop(context);
         CustomSnackBar.showSnackBar(context, e.toString());

@@ -60,21 +60,22 @@ class LocationRepository
 
   Future<String> getStaticMapUrlOfCurrentLocation()
   async {
-    final LocationData locationData = await _askPermission();
+    final LocationData? locationData = await askPermission();
+    if (locationData == null) return '';
     final double lat = locationData.latitude!;
     final double lng = locationData.longitude!;
 
     return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=13&size=400x400&markers=color:red%7Clabel:S%7C$lat,$lng&key=${dotenv.env['API_KEY']}";
   }
   
-  Future<LocationData> _askPermission() async {
+  Future<LocationData?> askPermission() async {
     Location location = Location();
 
     bool serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
-        throw Exception("open Location Service");
+        return null;
       }
     }
 
@@ -82,7 +83,7 @@ class LocationRepository
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) {
-        throw Exception("Accept Permission");
+        return null;
       }
     }
 
