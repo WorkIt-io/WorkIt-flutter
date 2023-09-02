@@ -8,6 +8,8 @@ ColorScheme colorScheme = ColorScheme.fromSeed(
 );
 
 class CurrentTheme {
+  
+
   ThemeData get themeData {
     return ThemeData().copyWith(      
       appBarTheme: const AppBarTheme().copyWith(
@@ -17,7 +19,7 @@ class CurrentTheme {
       ),
       textTheme: GoogleFonts.latoTextTheme(),
       useMaterial3: true,
-      colorScheme: colorScheme,            
+      colorScheme: colorScheme,         
     );
   }
 }

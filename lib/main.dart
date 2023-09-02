@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +7,7 @@ import 'package:workit/screens/home_screen.dart';
 import 'package:workit/screens/login_page.dart';
 import 'package:workit/screens/verify_email_screen.dart';
 import 'package:workit/theme.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class UserAuthStream extends ConsumerWidget {
   const UserAuthStream({super.key});
 
@@ -41,7 +43,7 @@ class UserAuthStream extends ConsumerWidget {
               return user.emailVerified
                   ? const HomeScreen()
                   : const EmailVerificationPage();
-            } else // user never Sign Up.
+            } else // user never Sign Up or log out.
             {
               return const LoginPage();
             }
@@ -51,3 +53,6 @@ class UserAuthStream extends ConsumerWidget {
         );
   }
 }
+
+
+

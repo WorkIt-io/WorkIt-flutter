@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/api/repository/auth_repository.dart';
 
@@ -25,13 +24,23 @@ class AuthController {
     return authRepository.getCurrentUser();
   }
     
-  Future<void> login(BuildContext context, String email, String password) async
+  Future<void> login(String email, String password) async
   {
-    await authRepository.login(context, email, password);
+    await authRepository.login(email, password);
   }
 
-  Future<void> signup(BuildContext context, String email, String password)
+  Future<void> signup(String email, String password, String fullName)
   async {
-    authRepository.signup(context, email, password);
+    await authRepository.signup(email, password, fullName);
+  }
+
+  Future<void> googleSignIn() async
+  {
+    await authRepository.googleSignIn();
+  }
+
+  Future<void> signOut()
+  async {
+    authRepository.signOut();
   }
 }
