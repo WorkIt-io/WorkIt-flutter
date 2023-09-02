@@ -2,14 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'package:workit/common/text_icon.dart';
+import 'package:workit/models/business.dart';
+
 import 'package:workit/providers/business.dart';
 import 'package:workit/providers/user_location_notifier.dart';
 import 'package:workit/screens/businesses_detail_screen.dart';
 import 'package:workit/utils/haversine_formula.dart';
 
-import '../../../common/loader.dart';
-import '../../../common/text_icon.dart';
-import '../../../models/business.dart';
+
 
 class BusinessRow extends ConsumerWidget {
   const BusinessRow(this.businesses, {required this.showDistance, super.key});
