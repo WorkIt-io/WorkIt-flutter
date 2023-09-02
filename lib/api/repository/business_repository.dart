@@ -14,12 +14,17 @@ class BusinessRepository {
 
   Future<List<BusinessModel>> getAllBusinessFromDatabase() async {
     List<BusinessModel> businessList = [];
-    final QuerySnapshot<Map<String, dynamic>> collection = await firestore.collection('businesses').get();
-    for (QueryDocumentSnapshot<Map<String, dynamic>> businessDoc in collection.docs) {
+    final QuerySnapshot<Map<String, dynamic>> collection =
+        await firestore.collection('businesses').get();    
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> businessDoc
+        in collection.docs) {
       Map<String, dynamic> map = businessDoc.data();
       BusinessModel business = BusinessModel.fromMap(map);
       businessList.add(business);
     }
+
+    businessList.sort((a, b) => b.rate.compareTo(a.rate));
     return businessList;
   }
 

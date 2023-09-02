@@ -52,7 +52,10 @@ dependencies:
   http: ^0.13.6
   uuid: ^3.0.7
   intl: ^0.18.1
+  email_validator: ^2.1.17
+  google_sign_in: ^6.1.5
 
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -80,9 +83,10 @@ flutter:
     - assets/images/workit_logo.jpeg
     - assets/images/workit_logo_no_bg.png
     - assets/images/blank-profile.png
+    - assets/images/google.png
+    - assets/images/apple.png    
     - .env
-  
-
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

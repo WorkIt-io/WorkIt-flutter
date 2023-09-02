@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/controller/auth_controller.dart';
 
 import '../../constant/firebase_instance.dart';
 
-class DrawerHomePage extends StatelessWidget {
+class DrawerHomePage extends ConsumerWidget {
   const DrawerHomePage({
     super.key,    
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     
     return Drawer(
@@ -51,7 +53,7 @@ class DrawerHomePage extends StatelessWidget {
                 style: theme.textTheme.labelLarge!.copyWith(fontSize: 20),
               ),
               trailing: IconButton(
-                onPressed: () async => await firebaseInstance.signOut(),
+                onPressed: () async => await ref.read(authControllerProvider).signOut(),
                 icon: const Icon(Icons.logout),
               ),
             ),

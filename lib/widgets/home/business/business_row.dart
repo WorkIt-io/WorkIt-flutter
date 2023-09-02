@@ -1,24 +1,38 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'package:workit/common/text_icon.dart';
+import 'package:workit/models/business.dart';
+
 import 'package:workit/providers/business.dart';
+import 'package:workit/providers/user_location_notifier.dart';
 import 'package:workit/screens/businesses_detail_screen.dart';
+import 'package:workit/utils/haversine_formula.dart';
 
-import '../../../common/text_icon.dart';
-import '../../../models/business.dart';
 
-class BusinessRow extends StatelessWidget {
+
+class BusinessRow extends ConsumerWidget {
   const BusinessRow(this.businesses, {required this.showDistance, super.key});
 
 
   final bool showDistance;
   final List<BusinessModel> businesses;  
 
+  String? getDistance(LatLng businessLatLng, LatLng myLatLng, WidgetRef ref)
+  {
+    final double distance = HaversineFormula.haversineDistance(myLatLng.latitude, myLatLng.longitude, businessLatLng.latitude, businessLatLng.longitude);
+    return distance.ceil().toString();
+  }   
+
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context, WidgetRef ref) {
+    final LatLng? myLoc = ref.watch(userLocationNotifierProvider);
+
     return SizedBox(
-      height: 240,
-      child: ListView.builder(
-        shrinkWrap: true,
+      height: 250,
+      child: ListView.builder(        
         scrollDirection: Axis.horizontal,
         itemCount: businesses.length,
         itemBuilder: (context, index) {
@@ -36,7 +50,7 @@ class BusinessRow extends StatelessWidget {
             },
             child: Container(
               clipBehavior: Clip.hardEdge,
-              width: 240,
+              width: 250,
               margin: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -77,14 +91,14 @@ class BusinessRow extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               color: theme.colorScheme.primary),
                         ),
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 5),                        
                         Text(
                           businesses[index].description,
                           maxLines: 2,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              color: theme.colorScheme.secondary, fontSize: 16),
+                              color: theme.colorScheme.secondary, fontSize: 18),
                         )
                       ],
                     ),
@@ -108,7 +122,7 @@ class BusinessRow extends StatelessWidget {
                               width: 20,
                               color: Colors.black,
                             )),
-                        //Text("${businesses[index].distance} km"),
+                        if(showDistance) myLoc == null ? const SizedBox(height: 20, width:20, child: CircularProgressIndicator()) : Text("${getDistance(businesses[index].location, myLoc ,ref) ?? 2} km"),
                         const Spacer(),
                         Container(
                           padding: const EdgeInsets.only(

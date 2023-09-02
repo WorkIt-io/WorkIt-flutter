@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
-
-import 'package:workit/constant/firebase_instance.dart';
 import 'package:workit/providers/review_notifier.dart';
 
-import '../../../models/review.dart';
 import '../../../utils/review_widget_helper.dart';
 
 class ReviewDialog extends ConsumerStatefulWidget {
