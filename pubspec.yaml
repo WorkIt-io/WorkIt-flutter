@@ -54,6 +54,7 @@ dependencies:
   intl: ^0.18.1
   email_validator: ^2.1.17
   google_sign_in: ^6.1.5
+  transparent_image: ^2.0.1
 
   
 dev_dependencies:
@@ -83,8 +84,12 @@ flutter:
     - assets/images/workit_logo.jpeg
     - assets/images/workit_logo_no_bg.png
     - assets/images/blank-profile.png
-    - assets/images/google.png
-    - assets/images/apple.png    
+    - assets/images/login/google.png
+    - assets/images/login/apple.png
+    - assets/images/home/ropes.jpg
+    - assets/images/home/sit_up.jpg
+    - assets/images/home/yoga.jpg
+        
     - .env
     
   # An image asset can refer to one or more resolution-specific "variants", see

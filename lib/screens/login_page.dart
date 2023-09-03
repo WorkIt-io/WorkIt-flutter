@@ -152,7 +152,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         SquareTile(
-                          imagePath: 'assets/images/google.png',
+                          imagePath: 'assets/images/login/google.png',
                           onTap: () async {
                             try {
                              await ref

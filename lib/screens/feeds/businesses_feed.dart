@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/providers/businesses_notifier.dart';
 import 'package:workit/providers/user_location_notifier.dart';
 import 'package:workit/widgets/home/business/business_row.dart';
+import 'package:workit/widgets/home/business/page_view_images_home.dart';
 
 import '../../models/business.dart';
-import '../../widgets/home/search_text_filed.dart';
 
 class BusinessesFeed extends ConsumerStatefulWidget {
   const BusinessesFeed({super.key});
@@ -25,6 +25,13 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
           .read(businessesStateNotifierProvider.notifier)
           .getAllBusinessFromDatabase();
     }
+
+    getLocationBusiness();
+  }
+
+  void getLocationBusiness() {
+    setState(() => showDistance = !showDistance);
+    ref.read(userLocationNotifierProvider.notifier).getCurrentLocation();
   }
 
   @override
@@ -39,8 +46,10 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 10),
-          const SearchTextFiled(),
+          const Padding(
+            padding: EdgeInsets.only(left: 8.0, top: 8.0),
+            child: SizedBox(height: 200, child: PageViewImagesHome()),
+          ),          
           const SizedBox(height: 10),
           const Divider(),
           Padding(
@@ -72,10 +81,7 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                  onPressed: () {
-                    setState(() => showDistance = !showDistance);
-                    ref.read(userLocationNotifierProvider.notifier).getCurrentLocation();
-                  },
+                  onPressed: getLocationBusiness,
                   child: const Text("get Location")),
             ],
           ),
@@ -84,4 +90,3 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
     );
   }
 }
-
