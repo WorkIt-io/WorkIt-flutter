@@ -51,7 +51,7 @@ class AuthRepository {
       _userRepository.setInitialData(
           userCredential.user!.email!, userCredential.user!.displayName ?? '');
     } catch (error) {
-      print('Error during Google sign-in: $error');
+      rethrow;
     }
   }
 

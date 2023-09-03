@@ -16,15 +16,17 @@ import 'package:workit/utils/haversine_formula.dart';
 class BusinessRow extends ConsumerWidget {
   const BusinessRow(this.businesses, {required this.showDistance, super.key});
 
-
   final bool showDistance;
-  final List<BusinessModel> businesses;  
+  final List<BusinessModel> businesses;
 
-  String? getDistance(LatLng businessLatLng, LatLng myLatLng, WidgetRef ref)
-  {
-    final double distance = HaversineFormula.haversineDistance(myLatLng.latitude, myLatLng.longitude, businessLatLng.latitude, businessLatLng.longitude);
+  String? getDistance(LatLng businessLatLng, LatLng myLatLng, WidgetRef ref) {
+    final double distance = HaversineFormula.haversineDistance(
+        myLatLng.latitude,
+        myLatLng.longitude,
+        businessLatLng.latitude,
+        businessLatLng.longitude);
     return distance.ceil().toString();
-  }   
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +34,7 @@ class BusinessRow extends ConsumerWidget {
 
     return SizedBox(
       height: 250,
-      child: ListView.builder(        
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: businesses.length,
         itemBuilder: (context, index) {
@@ -45,12 +47,11 @@ class BusinessRow extends ConsumerWidget {
                   builder: (context) =>
                       BusinessDeatilScreen(business: businesses[index]),
                 ),
-
               );
             },
             child: Container(
               clipBehavior: Clip.hardEdge,
-              width: 250,
+              width: 270,
               margin: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -60,20 +61,21 @@ class BusinessRow extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  businesses[index].images.isEmpty ?
-                  Image.asset("assets/images/workit_logo_no_bg.png",
-                    fit: BoxFit.fill,                    
-                    height: 100,
-                    width: double.infinity,
-                  ) 
-                  :
-                  CachedNetworkImage(
-                    imageUrl: businesses[index].images.first,
-                    placeholder: (context, url) => Image.asset("assets/images/workit_logo_no_bg.png"),
-                    fit: BoxFit.fill,
-                    height: 100,
-                    width: double.infinity,
-                  ),
+                  businesses[index].images.isEmpty
+                      ? Image.asset(
+                          "assets/images/workit_logo_no_bg.png",
+                          fit: BoxFit.fill,
+                          height: 100,
+                          width: double.infinity,
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: businesses[index].images.first,
+                          placeholder: (context, url) => Image.asset(
+                              "assets/images/workit_logo_no_bg.png"),
+                          fit: BoxFit.fill,
+                          height: 100,
+                          width: double.infinity,
+                        ),
                   const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0),
@@ -91,7 +93,7 @@ class BusinessRow extends ConsumerWidget {
                               fontWeight: FontWeight.bold,
                               color: theme.colorScheme.primary),
                         ),
-                        const SizedBox(height: 5),                        
+                        const SizedBox(height: 5),
                         Text(
                           businesses[index].description,
                           maxLines: 2,
@@ -122,7 +124,14 @@ class BusinessRow extends ConsumerWidget {
                               width: 20,
                               color: Colors.black,
                             )),
-                        if(showDistance) myLoc == null ? const SizedBox(height: 20, width:20, child: CircularProgressIndicator()) : Text("${getDistance(businesses[index].location, myLoc ,ref) ?? 2} km"),
+                        if (showDistance)
+                          myLoc == null
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator())
+                              : Text(
+                                  "${getDistance(businesses[index].location, myLoc, ref) ?? 2} km"),
                         const Spacer(),
                         Container(
                           padding: const EdgeInsets.only(
