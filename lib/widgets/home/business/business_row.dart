@@ -11,6 +11,8 @@ import 'package:workit/providers/user_location_notifier.dart';
 import 'package:workit/screens/businesses_detail_screen.dart';
 import 'package:workit/utils/haversine_formula.dart';
 
+
+
 class BusinessRow extends ConsumerWidget {
   const BusinessRow(this.businesses, {required this.showDistance, super.key});
 
