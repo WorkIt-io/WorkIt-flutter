@@ -1,24 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:workit/api/repository/business_repository.dart';
+import 'package:workit/api/repository/business/business_image_repository.dart';
+import 'package:workit/api/repository/business/business_repository.dart';
 import 'package:workit/common/date_format.dart';
-import 'package:workit/controller/user_controller.dart';
 
-import '../api/repository/image_repository.dart';
-import '../models/user_model.dart';
+
 import 'businesses_notifier.dart';
 
 
 final imageBusinessNotifierProvider = StateNotifierProvider<ImageBusinessNotifier, List<String>>((ref) {
-  final imageRepository = ref.watch(imageRepositoryProvider);
+  final imageRepository = ref.watch(businessImageRepositoryProvider);
   return ImageBusinessNotifier(imageRepository, ref);
 });
 
 class ImageBusinessNotifier extends StateNotifier<List<String>> {
   ImageBusinessNotifier(this._imageRepository, this._ref): super([]);
 
-  final ImageRepository _imageRepository;
+  final BusinessImageRepository _imageRepository;
   final StateNotifierProviderRef _ref;
 
   bool _isLoading = false;
@@ -74,17 +73,6 @@ class ImageBusinessNotifier extends StateNotifier<List<String>> {
     List<String> temp = List.from(state);
     temp.remove(imageUrl);
     state = temp;
-  }
-
-
-  // move this function from the state notifier later
-  Future<void> uploadProfileUserImage(File image) async {
-    UserModel user = await _ref.read(userControllerProvider).getUser();
-    if (user.imageUrl == null) {
-      final String imageUrl =
-          await _imageRepository.uploadProfileUserImage(image);
-      _ref.read(userControllerProvider).updateProfilePicture(imageUrl);
-    } // can throw exception but for know user just return void.
   }
 
   

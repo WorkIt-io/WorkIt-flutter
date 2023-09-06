@@ -2,21 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/models/review.dart';
-import 'package:workit/providers/business.dart';
+import 'package:workit/providers/business/business_id.dart';
+
 
 final reviewRepositoryProvider = Provider<ReviewRepository>((ref) {
-  return ReviewRepository(FirebaseFirestore.instance, FirebaseAuth.instance);
+  return ReviewRepository(FirebaseFirestore.instance, FirebaseAuth.instance, ref);
 });
 
 class ReviewRepository {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _firebase;
+  final ProviderRef _ref;  
 
-  ReviewRepository(this._firestore, this._firebase);
+  ReviewRepository(this._firestore, this._firebase, this._ref);
+  
 
   Future<List<Review>> getAllReviews() async {
-    final List<Review> reviews = [];
-    final businessId = selectedBusiness!.id;
+    final businessId = _ref.read(businessIdProvider);
+    final List<Review> reviews = [];    
 
     final CollectionReference<Map<String, dynamic>> businessCol =
         FirebaseFirestore.instance
@@ -37,9 +40,9 @@ class ReviewRepository {
   }
 
   Future<Review> postReview(String title, String text, int rate) async {
+    final businessId = _ref.read(businessIdProvider);
     final review = Review(
-        id: _firebase.currentUser!.uid, title: title, text: text, rate: rate);
-    final businessId = selectedBusiness!.id;
+        id: _firebase.currentUser!.uid, title: title, text: text, rate: rate);    
 
     final ref = _firestore
         .collection('businesses')
@@ -59,9 +62,9 @@ class ReviewRepository {
   }
 
   Future<Review> updateReview(String title, String text, int rate) async {
+    final businessId = _ref.read(businessIdProvider);
     final review = Review(
-        id: _firebase.currentUser!.uid, title: title, text: text, rate: rate);
-    final businessId = selectedBusiness!.id;
+        id: _firebase.currentUser!.uid, title: title, text: text, rate: rate);    
 
     final ref = _firestore
         .collection('businesses')
@@ -80,8 +83,8 @@ class ReviewRepository {
   }
 
   Future<void> deleteReview() async {
-    final reviewId = _firebase.currentUser!.uid;
-    final businessId = selectedBusiness!.id;
+    final businessId = _ref.read(businessIdProvider);
+    final reviewId = _firebase.currentUser!.uid;    
 
     final ref = _firestore
         .collection('businesses')

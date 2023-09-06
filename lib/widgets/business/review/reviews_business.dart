@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/common/text_icon.dart';
-import 'package:workit/providers/review_notifier.dart';
+import 'package:workit/providers/business/review_notifier.dart';
+
 import 'package:workit/widgets/business/review/comments_list.dart';
 
 import './review_dialog.dart';
@@ -42,7 +43,7 @@ class _ReviewsBusinessState extends ConsumerState<ReviewsBusiness> {
 
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-        margin: const EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
         width: 400,
         decoration: BoxDecoration(
             shape: BoxShape.rectangle,

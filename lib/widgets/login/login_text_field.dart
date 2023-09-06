@@ -51,7 +51,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
                 borderSide: BorderSide(color: Colors.grey[400]!)),
             fillColor: Colors.grey[100],
             filled: true),
-        style: TextStyle(fontSize: 16),
+        style: const TextStyle(fontSize: 16),
         keyboardType: widget.keyboardType,
         textCapitalization: widget.textCapitalization,
         autocorrect: widget.autoCorrect,

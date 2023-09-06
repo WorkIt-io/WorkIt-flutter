@@ -55,6 +55,8 @@ dependencies:
   email_validator: ^2.1.17
   google_sign_in: ^6.1.5
   transparent_image: ^2.0.1
+  lottie: ^2.6.0
+  flutter_animate: ^4.2.0+1
 
   
 dev_dependencies:
@@ -89,6 +91,8 @@ flutter:
     - assets/images/home/ropes.jpg
     - assets/images/home/sit_up.jpg
     - assets/images/home/yoga.jpg
+    - assets/images/animation/business_animation.json
+    - assets/images/animation/down_arrow_animation.json
         
     - .env
     

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import '../../common/select_image.dart';
 
 class ProfilePicture extends StatefulWidget {
-  const ProfilePicture({super.key});
+  const ProfilePicture({super.key, required this.profilePicture});
+
+  final String? profilePicture;
 
   @override
   State<ProfilePicture> createState() => _ProfilePictureState();
@@ -15,11 +17,19 @@ class _ProfilePictureState extends State<ProfilePicture> {
   File? profileImage;
 
   ImageProvider<Object> getProfileImage() {
-    if (profileImage == null) {
-      return const AssetImage("assets/images/blank-profile.png");
+    final ImageProvider<Object> image;
+
+    if (profileImage == null) {      
+      if (widget.profilePicture != null) {
+        image = NetworkImage(widget.profilePicture!);
+      } else {
+        image = const AssetImage("assets/images/blank-profile.png");
+      }      
     } else {
-      return FileImage(profileImage!);
+      image = FileImage(profileImage!);
     }
+
+    return image;
   }
 
   @override
@@ -34,7 +44,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
               }
             },
             child: CircleAvatar(
-              radius: 60,
+              radius: 60,              
               backgroundImage: getProfileImage(),
             )),
         const Positioned(right: 5, bottom: 0, child: Icon(Icons.add_a_photo)),

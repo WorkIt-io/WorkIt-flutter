@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:workit/providers/businesses_notifier.dart';
+import 'package:workit/providers/business/businesses_notifier.dart';
+
 import 'package:workit/providers/user_location_notifier.dart';
 import 'package:workit/widgets/home/business/business_row.dart';
 import 'package:workit/widgets/home/business/page_view_images_home.dart';
@@ -49,8 +50,41 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
           const Padding(
             padding: EdgeInsets.only(left: 8.0, top: 8.0),
             child: SizedBox(height: 200, child: PageViewImagesHome()),
-          ),          
+          ),
           const SizedBox(height: 10),
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 0, 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Near By",
+                    style: theme.textTheme.headlineMedium!.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.bold)),
+                TextButton(
+                  onPressed: () {},
+                  child: const Row(
+                    children: [
+                      Text(
+                        "See All",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Icon(
+                        Icons.arrow_right,
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          BusinessRow(
+            businesses,
+            showDistance: showDistance,
+          ),
+          const SizedBox(height: 20),
           const Divider(),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
@@ -60,7 +94,7 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
                     fontWeight: FontWeight.bold)),
           ),
           BusinessRow(
-            businesses,
+            businesses.reversed.toList(),
             showDistance: showDistance,
           ),
           const SizedBox(height: 20),

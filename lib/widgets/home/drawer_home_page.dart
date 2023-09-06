@@ -1,64 +1,119 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/common/custom_snack_bar.dart.dart';
+import 'package:workit/common/loader.dart';
 import 'package:workit/controller/auth_controller.dart';
-
-import '../../constant/firebase_instance.dart';
+import 'package:workit/controller/user_controller.dart';
+import 'package:workit/models/business.dart';
+import 'package:workit/providers/business/business_id.dart';
+import 'package:workit/providers/business/businesses_notifier.dart';
+import 'package:workit/screens/business_detail_screen_admin.dart';
+import 'package:workit/widgets/profile/list_tile_darwer.dart';
+import 'package:workit/widgets/profile/profile_picture.dart';
 
 class DrawerHomePage extends ConsumerWidget {
   const DrawerHomePage({
-    super.key,    
+    super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    
+    final futureUser = ref.watch(userDataFutureProvider);
+
     return Drawer(
-      child: Column(
-        children: [
-          DrawerHeader(
-            child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Colors.orangeAccent.shade400,
-                  Colors.orangeAccent.shade100
-                ], begin: Alignment.topLeft, end: Alignment.bottomLeft),
-              ),
-              child: ListTile(
-                title: Text(
-                  'WorkIt',
-                  style: theme.textTheme.headlineLarge,
-                ),
-                subtitle: Text(
-                  'Start Today',
-                  style: theme.textTheme.headlineSmall,
-                ),
-                trailing: const Icon(
-                  Icons.sports_basketball,
-                  size: 60,
-                  color: Colors.deepOrange,
+      child: futureUser.when(
+        data: (data) => Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 245,
+              child: DrawerHeader(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ProfilePicture(profilePicture: data.imageUrl),
+                      const SizedBox(height: 15),
+                      Text(
+                        data.fullName,
+                        style: const TextStyle(
+                            fontSize: 28,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: ListTile(
+            const SizedBox(height: 20),
+            if (data.role == 'Admin')
+              ListTileDrawer(
+                  title: "My Business",
+                  leadingIconData: Icons.business_sharp,
+                  trailingIconData: Icons.arrow_right_alt_sharp,
+                  onTap: data.businessId != null
+                      ? () async {
+                          final BusinessModel business = await ref
+                              .read(businessesStateNotifierProvider.notifier)
+                              .getBusinessById(data.businessId!);  
+
+                          ref.read(businessIdProvider.notifier).state = business.id;                        
+
+                          if (context.mounted) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  BusinessDeatilScreenAdmin(business: business)));
+                          }
+                        }
+                      : null),
+            const SizedBox(height: 10),
+            const ListTileDrawer(
+              title: "Events",
+              leadingIconData: Icons.event_available_outlined,
+              trailingIconData: Icons.arrow_right_alt_sharp,
+            ),
+            const SizedBox(height: 10),
+            const ListTileDrawer(
+              title: "Settings",
+              leadingIconData: Icons.settings,
+              trailingIconData: Icons.arrow_right_alt_sharp,
+            ),
+            const Spacer(),
+            ListTile(
+              contentPadding: const EdgeInsets.only(bottom: 4),
               title: Text(
-                firebaseInstance.currentUser!.email!,
-                style: theme.textTheme.labelLarge!.copyWith(fontSize: 20),
+                data.email,
+                style: theme.textTheme.labelLarge!.copyWith(fontSize: 22),
               ),
-              trailing: IconButton(
-                onPressed: () async => await ref.read(authControllerProvider).signOut(),
-                icon: const Icon(Icons.logout),
+              leading: IconButton(
+                onPressed: () async {
+                  await ref.read(authControllerProvider).signOut();
+                  await ref.read(userControllerProvider).deleteUser();
+                },
+                icon: Transform.rotate(
+                    angle: pi,
+                    child: const Icon(
+                      Icons.logout_outlined,
+                    )),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
+        error: (Object error, StackTrace stackTrace) {
+          CustomSnackBar.showSnackBar(context, error.toString());
+          return null;
+        },
+        loading: () => const Loader(),
       ),
     );
   }

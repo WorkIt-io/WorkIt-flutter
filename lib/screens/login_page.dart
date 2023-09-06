@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/common/custom_snack_bar.dart.dart';
 import 'package:workit/common/loading_dialog.dart';
 import 'package:workit/utils/login_page_helper.dart';
 import 'package:workit/widgets/login/login_button.dart';
@@ -37,10 +38,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 .read(authControllerProvider)
                 .signup(_email, _password, _fullName);
 
-        if (Navigator.canPop(context) && context.mounted) Navigator.of(context).pop();        
+        if (context.mounted && Navigator.canPop(context)) {
+          Navigator.of(context).pop(); // pop loading dialog
+        }
       } on FirebaseAuthException catch (e) {
-        if (context.mounted) Navigator.of(context).pop();
-        startErrorDialog(context, title: "Ho No", text: e.message!);
+        if (context.mounted) {
+          Navigator.of(context).pop(); //pop loading dialog
+          startErrorDialog(context, title: "Ho No", text: e.message!);
+        }
       }
     }
   }
@@ -155,17 +160,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           imagePath: 'assets/images/login/google.png',
                           onTap: () async {
                             try {
-                             await ref
-                                .read(authControllerProvider)                                
-                                .googleSignIn(); 
+                              await ref
+                                  .read(authControllerProvider)
+                                  .googleSignIn();
                             } catch (e) {
-                              print("from google: ${e.toString()}");
+                              if (context.mounted) CustomSnackBar.showSnackBar(context, e.toString());
                             }
-                             
-                            
                           },
                         ),
-                        const SquareTile(imagePath: 'assets/images/apple.png'),
+                        const SquareTile(imagePath: 'assets/images/login/apple.png'),
                       ],
                     ),
                     const SizedBox(height: 25),
