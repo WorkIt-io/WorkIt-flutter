@@ -93,6 +93,7 @@ flutter:
     - assets/images/home/yoga.jpg
     - assets/images/animation/business_animation.json
     - assets/images/animation/down_arrow_animation.json
+
         
     - .env
     
