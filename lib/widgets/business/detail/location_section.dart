@@ -32,10 +32,11 @@ class _LocationSectionState extends State<LocationSection> {
           ),
           const SizedBox(height: 10),
           const MapWidget(),
+          const SizedBox(height: 10),
           Text(
             widget.address,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: 20,
             ),
           ),
         ],

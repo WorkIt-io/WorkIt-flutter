@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/constant/firebase_instance.dart';
 import 'package:workit/models/review.dart';
-import 'package:workit/providers/review_notifier.dart';
+import 'package:workit/providers/business/review_notifier.dart';
+
 import 'package:workit/widgets/business/review/review_dialog.dart';
 
 class Comment extends ConsumerWidget {

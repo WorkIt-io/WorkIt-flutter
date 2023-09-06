@@ -1,6 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:workit/api/repository/business_repository.dart';
+import 'package:workit/api/repository/business/business_repository.dart';
 import 'package:workit/models/business.dart';
+
+final businessesStateNotifierProvider =
+    StateNotifierProvider<BusinessesNotifier, List<BusinessModel>>((ref) {
+  final businessRepository = ref.watch(businessRepositoryProvider);
+  return BusinessesNotifier(businessRepository);
+});
 
 class BusinessesNotifier extends StateNotifier<List<BusinessModel>> {
   final BusinessRepository _businessRepository;
@@ -16,6 +22,17 @@ class BusinessesNotifier extends StateNotifier<List<BusinessModel>> {
   Future<void> getAllBusinessFromDatabase()
   async {
     state = await _businessRepository.getAllBusinessFromDatabase();
+  }
+
+  Future<BusinessModel> getBusinessById(String businessId)
+  async {
+    final businessDoc = await _businessRepository.getBusinessById(businessId);
+    return BusinessModel.fromMap(businessDoc.data()!);
+  }
+
+  BusinessModel getBusinessFromState(String businessId)
+  {
+     return state.firstWhere((business) => business.id == businessId);
   }
 
 
@@ -39,8 +56,4 @@ class BusinessesNotifier extends StateNotifier<List<BusinessModel>> {
   }
 }
 
-final businessesStateNotifierProvider =
-    StateNotifierProvider<BusinessesNotifier, List<BusinessModel>>((ref) {
-  final businessRepository = ref.watch(businessRepositoryProvider);
-  return BusinessesNotifier(businessRepository);
-});
+

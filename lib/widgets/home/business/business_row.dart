@@ -2,11 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'package:workit/common/text_icon.dart';
 import 'package:workit/models/business.dart';
+import 'package:workit/providers/business/business_id.dart';
 
-import 'package:workit/providers/business.dart';
 import 'package:workit/providers/user_location_notifier.dart';
 import 'package:workit/screens/businesses_detail_screen.dart';
 import 'package:workit/utils/haversine_formula.dart';
@@ -40,8 +39,8 @@ class BusinessRow extends ConsumerWidget {
         itemBuilder: (context, index) {
           var theme = Theme.of(context);
           return GestureDetector(
-            onTap: () {
-              selectedBusiness = businesses[index];
+            onTap: () {              
+              ref.read(businessIdProvider.notifier).state = businesses[index].id;
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>
@@ -69,9 +68,10 @@ class BusinessRow extends ConsumerWidget {
                           width: double.infinity,
                         )
                       : CachedNetworkImage(
-                          imageUrl: businesses[index].images.first,
+
+                          imageUrl: businesses[index].images.first,                          
                           placeholder: (context, url) => Image.asset(
-                              "assets/images/workit_logo_no_bg.png"),
+                              "assets/images/workit_logo_no_bg.png"),                              
                           fit: BoxFit.fill,
                           height: 100,
                           width: double.infinity,

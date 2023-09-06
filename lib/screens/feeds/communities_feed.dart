@@ -1,41 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:workit/models/community.dart';
-import '../../constant/dummy_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CommunitiesFeed extends StatefulWidget {
+
+class CommunitiesFeed extends ConsumerStatefulWidget {
   const CommunitiesFeed({super.key});
 
   @override
-  State<CommunitiesFeed> createState() => CommunitiesFeedState();
+  ConsumerState<CommunitiesFeed> createState() => CommunitiesFeedState();
 }
 
-class CommunitiesFeedState extends State<CommunitiesFeed> {
-  List<Community> commList = Communities().communitiesList;
+class CommunitiesFeedState extends ConsumerState<CommunitiesFeed> {
 
   @override
   Widget build(BuildContext context) {
-    return  
-      ListView.builder(        
-        itemCount: commList.length,
-        itemBuilder: (context, index) => InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
-            child: Card(
-              child: ListTile(
-                title: Text(commList[index].name),
-                subtitle: Text(commList[index].description),
-                leading: Image.network(
-                  height: 60,
-                  width: 60,
-                  commList[index].imageUrl,
-                  fit: BoxFit.scaleDown,
-                ),
-                trailing: const Icon(Icons.arrow_right_outlined, size: 30,),
-              ),
-            ),
-          ),
-        ),
-      );    
+    return  Container();
+      
   }
 }

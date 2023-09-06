@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:workit/controller/location_controller.dart';
+import 'package:workit/screens/add_business_screen.dart';
 
 class TextFieldAddBussines extends ConsumerStatefulWidget {
   const TextFieldAddBussines(
@@ -12,11 +13,11 @@ class TextFieldAddBussines extends ConsumerStatefulWidget {
       this.controller,
       this.getlocation,
       this.lines,
-      required this.changeReverse,
       required this.onSave,
       required this.hintText,
       required this.type,
-      required this.validate})
+      required this.validate,
+      this.onScroll})
       : super(key: key);
 
   final TextEditingController? controller;
@@ -26,7 +27,7 @@ class TextFieldAddBussines extends ConsumerStatefulWidget {
   final TextInputType type;
   final String hintText;
   final String? Function(String? param) validate;
-  final Function(bool param) changeReverse;
+  final Function? onScroll;
   final Function(LatLng location)? getlocation;
 
   @override
@@ -65,7 +66,7 @@ class _TextFiledAddBussinesState extends ConsumerState<TextFieldAddBussines> {
   getAutoComplete(String input) async {
     sessionToken ??= const Uuid().v4();
     predictions = [];
-    
+
     predictions = await ref
         .read(locationControllerProvider)
         .getAutoCompletePlaces(input, sessionToken!, 'il');
@@ -103,7 +104,7 @@ class _TextFiledAddBussinesState extends ConsumerState<TextFieldAddBussines> {
           getAutoComplete(value);
         } else {
           clearPredictions();
-        }        
+        }
       });
     } else {
       // all the others Text Fields
@@ -134,21 +135,25 @@ class _TextFiledAddBussinesState extends ConsumerState<TextFieldAddBussines> {
                 fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 10),
-          TextFormField(            
+          TextFormField(
             controller: widget.controller,
             style: const TextStyle(fontSize: 18),
             maxLines: widget.lines ?? 1,
-            focusNode: _focusNode,            
-            onTap: () => widget.changeReverse(
-                widget.type == TextInputType.streetAddress ||
-                    widget.type == TextInputType.multiline),
+            focusNode: _focusNode,
+            onTap: () { 
+                if (widget.onScroll != null) {
+                  widget.onScroll!();
+                }
+              },
+              
             onChanged: onChange,
             decoration: InputDecoration(
               suffixIcon: isValid
                   ? const Icon(Icons.check_circle_outline, color: Colors.green)
                   : null,
-              enabledBorder:  OutlineInputBorder(
-                  borderSide: BorderSide(color: isValid ? Colors.green :Colors.white, width: 2)),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: isValid ? Colors.green : Colors.white, width: 2)),
               focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blueGrey, width: 2)),
               errorBorder: const OutlineInputBorder(
@@ -160,7 +165,8 @@ class _TextFiledAddBussinesState extends ConsumerState<TextFieldAddBussines> {
             onSaved: widget.onSave,
           ),
           if (widget.type == TextInputType.streetAddress &&
-              predictions.isNotEmpty && _isFocused)
+              predictions.isNotEmpty &&
+              _isFocused)
             ListView.builder(
               shrinkWrap: true,
               itemCount: predictions.length,

@@ -24,7 +24,7 @@ class BusinessModel {
       required this.address,
       this.images = const []
       });
-
+  
   factory BusinessModel.fromMap(Map<String, dynamic> map)
   {
     
@@ -33,7 +33,7 @@ class BusinessModel {
     images: List<String>.from(map['images'])
     );
   }
-
+  
   Map<String, dynamic> toMap()
   {
     return {

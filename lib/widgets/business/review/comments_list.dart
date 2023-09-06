@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:workit/providers/review_notifier.dart';
+import 'package:workit/providers/business/review_notifier.dart';
+
 
 import '../../../models/review.dart';
 import 'comment.dart';

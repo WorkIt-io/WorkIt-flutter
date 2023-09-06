@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:workit/api/repository/review_repository.dart';
-import 'package:workit/providers/businesses_notifier.dart';
+import 'package:workit/api/repository/business/review_repository.dart';
+import 'package:workit/models/review.dart';
+import 'package:workit/providers/business/businesses_notifier.dart';
+
 import 'package:workit/utils/review_widget_helper.dart';
 
-import '../models/review.dart';
+
 
 class ReviewsNotifier extends StateNotifier<List<Review>> {
   final ReviewRepository _reviewRepository;

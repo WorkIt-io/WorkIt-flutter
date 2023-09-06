@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
-import 'package:workit/providers/review_notifier.dart';
+import 'package:workit/providers/business/review_notifier.dart';
+
 
 import '../../../utils/review_widget_helper.dart';
 
@@ -52,9 +53,9 @@ class _ReviewDialogState extends ConsumerState<ReviewDialog> {
         }
         formKey.currentState!.reset();
       } catch (error) {
-        CustomSnackBar.showSnackBar(context, error.toString());
+        if(context.mounted) CustomSnackBar.showSnackBar(context, error.toString());
       } finally {
-        Navigator.of(context).pop();
+        if(context.mounted) Navigator.of(context).pop();
       }
     } else {
       if (selectedRate == 0) {

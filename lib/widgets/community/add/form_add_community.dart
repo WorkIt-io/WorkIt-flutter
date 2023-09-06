@@ -3,37 +3,37 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
+import 'package:workit/common/loading_dialog.dart';
 import 'package:workit/constant/business_category.dart';
 import 'package:workit/controller/user_controller.dart';
-import 'package:workit/models/business.dart';
-import 'package:workit/providers/business/businesses_notifier.dart';
+import 'package:workit/models/community.dart';
+import 'package:workit/providers/community/communities_notifier.dart';
 import 'package:workit/utils/form_add_business_helper.dart';
 import 'package:workit/widgets/business/add/text_field_add_business.dart';
 
-class FormAddBusiness extends ConsumerStatefulWidget {
-  const FormAddBusiness(this.doScroll, {super.key});
+class FormAddCommunity extends ConsumerStatefulWidget {
+  const FormAddCommunity(this.doScroll, {super.key});
 
-  final Function doScroll; 
+  final Function doScroll;
 
   @override
-  ConsumerState<FormAddBusiness> createState() {
-    return _FormAddBusinessState();
+  ConsumerState<FormAddCommunity> createState() {
+    return _FormAddCommunityState();
   }
 }
 
-class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
+class _FormAddCommunityState extends ConsumerState<FormAddCommunity> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   String? _selectedCategory;
   LatLng? _location;
-  double _price = 0;
   String _name = '';
-  String _phoneNumber = '';
   String _description = '';
   String _address = '';
 
   TextEditingController addressController = TextEditingController();
-  
+
+  bool isReverse = false;
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
 
 
@@ -46,43 +46,34 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
         return;
       }
 
-      showDialog(
-        context: context,
-        barrierColor: Colors.white70,
-        builder: (context) => const Center(
-          widthFactor: 100,
-          heightFactor: 100,
-          child: CircularProgressIndicator(),
-        ),
-      );
+      startLoadingDialog(context);
 
-      final businessId = const Uuid().v4(); // maybe later change to user.id for have 1 business to 1 user.
+      final communityId = const Uuid()
+          .v4(); // maybe later change to user.id for have 1 business to 1 user.
 
-      final business = BusinessModel(
-          id: businessId,
+      final Community community = Community(
+          id: communityId,
           name: _name,
-          phoneNumber: _phoneNumber,
-          price: _price,
           description: _description,
-          rate: 0,
           location: _location!,
           category: _selectedCategory!,
           address: _address);
 
       try {
+        // send Community data.
+        await ref.read(communityStateNotifierProvider.notifier).addCommunity(community);
+
         await ref
-            .read(businessesStateNotifierProvider.notifier)
-            .addBusiness(business);
+            .read(userControllerProvider)
+            .updateUser({"communityId": communityId, 'role': 'Admin'});
 
-        await ref.read(userControllerProvider).updateUser({"businessId": businessId, 'role': 'Admin'});
-
-        if (mounted) Navigator.pop(context);
-        if (mounted) CustomSnackBar.showSnackBar(context, "Business Upload");
+        if (mounted) Navigator.pop(context); // remove loading screen
+        if (mounted) CustomSnackBar.showSnackBar(context, "Community Upload");
         formkey.currentState!.reset();
       } catch (e) {
         if (mounted) {
-          Navigator.pop(context);
-          CustomSnackBar.showSnackBar(context, e.toString());
+          Navigator.pop(context); // remove loading screen
+          startErrorDialog(context, title: 'Oh No', text: e.toString());
         }
       }
     } else {
@@ -91,7 +82,7 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
   }
 
   @override
-  Widget build(BuildContext context) {        
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Form(
@@ -104,18 +95,9 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
               fit: FlexFit.loose,
               child: TextFieldAddBussines(
                 onSave: (value) => _name = value!,
-                hintText: "Business Name:",                
+                hintText: "Community Name:",
                 type: TextInputType.text,
                 validate: FormAddBusinessHelper.validateName,
-              ),
-            ),
-            Flexible(
-              fit: FlexFit.loose,
-              child: TextFieldAddBussines(
-                onSave: (value) => _phoneNumber = value!,
-                hintText: "Phone Number:",
-                type: TextInputType.phone,
-                validate: FormAddBusinessHelper.validatePhone,
               ),
             ),
             Flexible(
@@ -125,31 +107,17 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
                 controller: addressController,
                 getlocation: (location) => _location = location,
                 hintText: "Address:",
-                onScroll: widget.doScroll,
                 type: TextInputType.streetAddress,
+                onScroll: widget.doScroll,
                 validate: FormAddBusinessHelper.validateAddress,
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: TextFieldAddBussines(
-                      onSave: (value) => _price = double.parse(value!),
-                      hintText: 'Price:',
-                      type: TextInputType.number,
-                      validate: FormAddBusinessHelper.validatePrice),
-                ),
-                const SizedBox(width: 30),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0, right: 10),
-                    child: CategoryPicker(
-                      onSave: (category) => _selectedCategory = category,
-                    ),
-                  ),
-                )
-              ],
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0, right: 10, left: 10),
+              child: CategoryPicker(
+                onSave: (category) => _selectedCategory = category,
+              ),
             ),
             Flexible(
               fit: FlexFit.loose,
@@ -157,8 +125,8 @@ class _FormAddBusinessState extends ConsumerState<FormAddBusiness> {
                 onSave: (value) => _description = value!,
                 hintText: 'Description:',
                 type: TextInputType.multiline,
-                validate: FormAddBusinessHelper.validateDescription,
                 onScroll: widget.doScroll,
+                validate: FormAddBusinessHelper.validateDescription,
                 lines: 7,
               ),
             ),

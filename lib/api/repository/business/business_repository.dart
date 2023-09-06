@@ -1,16 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/models/business.dart';
-import 'package:workit/providers/business.dart';
+import 'package:workit/providers/business/business_id.dart';
+
 
 final businessRepositoryProvider = Provider<BusinessRepository>((ref) {
-  return BusinessRepository(FirebaseFirestore.instance);
+  return BusinessRepository(FirebaseFirestore.instance, ref);
 });
 
 class BusinessRepository {
   final FirebaseFirestore firestore;
+  final ProviderRef _ref;
 
-  BusinessRepository(this.firestore);
+  BusinessRepository(this.firestore, this._ref);
+
+  String get path => 'businesses/${_ref.read(businessIdProvider)}';
 
   Future<List<BusinessModel>> getAllBusinessFromDatabase() async {
     List<BusinessModel> businessList = [];
@@ -23,19 +27,31 @@ class BusinessRepository {
       BusinessModel business = BusinessModel.fromMap(map);
       businessList.add(business);
     }
-
-    businessList.sort((a, b) => b.rate.compareTo(a.rate));
+        
     return businessList;
   }
 
-  Future<BusinessModel> getSelectedBusiness() async {
-    final businessId = selectedBusiness!.id;
+  Future<BusinessModel> getSelectedBusiness() async {    
+    final businessId = _ref.read(businessIdProvider);
     final DocumentReference<Map<String, dynamic>> ref =
         firestore.collection('businesses').doc(businessId);
     final doc = await ref.get();
 
     if (doc.exists) {
       return BusinessModel.fromMap(doc.data()!);
+    } else {
+      throw Exception("no business id found");
+    }
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getBusinessById(String businessId)
+  async {
+    final DocumentReference<Map<String, dynamic>> ref =
+        firestore.collection('businesses').doc(businessId);
+    final doc = await ref.get();
+
+    if (doc.exists) {
+      return doc;
     } else {
       throw Exception("no business id found");
     }
@@ -54,7 +70,7 @@ class BusinessRepository {
   }
 
   Future<void> updateBusinessDetail(Map<String, dynamic> map) async {
-    final businessId = selectedBusiness!.id;
+    final businessId = _ref.read(businessIdProvider);
     final DocumentReference<Map<String, dynamic>> ref =
         firestore.collection('businesses').doc(businessId);
     final doc = await ref.get();
