@@ -69,9 +69,9 @@ class BusinessRow extends ConsumerWidget {
                           width: double.infinity,
                         )
                       : CachedNetworkImage(
-                          imageUrl: businesses[index].images.first,
+                          imageUrl: businesses[index].images.first,                          
                           placeholder: (context, url) => Image.asset(
-                              "assets/images/workit_logo_no_bg.png"),
+                              "assets/images/workit_logo_no_bg.png"),                              
                           fit: BoxFit.fill,
                           height: 100,
                           width: double.infinity,
