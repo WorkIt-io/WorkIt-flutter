@@ -4,12 +4,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
 import 'package:workit/common/loading_dialog.dart';
-import 'package:workit/constant/business_category.dart';
+import 'package:workit/constant/categories.dart';
 import 'package:workit/controller/user_controller.dart';
 import 'package:workit/models/community.dart';
 import 'package:workit/providers/community/communities_notifier.dart';
+import 'package:workit/utils/date_parser.dart';
 import 'package:workit/utils/form_add_business_helper.dart';
 import 'package:workit/widgets/business/add/text_field_add_business.dart';
+import 'package:workit/widgets/community/add/date_text_filed.dart';
 
 class FormAddCommunity extends ConsumerStatefulWidget {
   const FormAddCommunity(this.doScroll, {super.key});
@@ -30,12 +32,12 @@ class _FormAddCommunityState extends ConsumerState<FormAddCommunity> {
   String _name = '';
   String _description = '';
   String _address = '';
+  String _dateTime = '';
 
   TextEditingController addressController = TextEditingController();
 
   bool isReverse = false;
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
-
 
   Future<void> onSave() async {
     if (formkey.currentState!.validate()) {
@@ -56,12 +58,15 @@ class _FormAddCommunityState extends ConsumerState<FormAddCommunity> {
           name: _name,
           description: _description,
           location: _location!,
+          date: parseCommunityDate(_dateTime),
           category: _selectedCategory!,
           address: _address);
 
       try {
         // send Community data.
-        await ref.read(communityStateNotifierProvider.notifier).addCommunity(community);
+        await ref
+            .read(communitiesStateNotifierProvider.notifier)
+            .addCommunity(community);
 
         await ref
             .read(userControllerProvider)
@@ -119,6 +124,13 @@ class _FormAddCommunityState extends ConsumerState<FormAddCommunity> {
                 onSave: (category) => _selectedCategory = category,
               ),
             ),
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0, right: 10, left: 10),
+              child: DateTextField(
+                onSave: (value) => _dateTime = value!,
+              ),
+            ),
             Flexible(
               fit: FlexFit.loose,
               child: TextFieldAddBussines(
@@ -142,14 +154,14 @@ class _FormAddCommunityState extends ConsumerState<FormAddCommunity> {
                     onPressed: () => Navigator.of(context).pop(),
                     label: Text(
                       "Back",
-                      style: TextStyle(
-                          fontSize: 22, color: Colors.blueGrey[400]),
+                      style:
+                          TextStyle(fontSize: 22, color: Colors.blueGrey[400]),
                     )),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.save_alt),
                   onPressed: () async => await onSave(),
-                  style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(140, 50)),
+                  style:
+                      ElevatedButton.styleFrom(fixedSize: const Size(140, 50)),
                   label: const Text(
                     "Save",
                     style: TextStyle(fontSize: 24),
@@ -176,19 +188,18 @@ class CategoryPicker extends StatefulWidget {
 
 class _CategoryPickerState extends State<CategoryPicker> {
   String? _selectedCategory;
+  bool isValid = false;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      style: _selectedCategory == null
-          ? const TextStyle(fontSize: 18, color: Colors.black87)
-          : const TextStyle(
-              fontSize: 18, color: Colors.green, fontWeight: FontWeight.bold),
+      style: const TextStyle(fontSize: 18, color: Colors.black87),
       decoration: InputDecoration(
         labelText: 'Category',
         labelStyle: const TextStyle(fontSize: 20, color: Colors.black87),
-        enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 2)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: isValid ? Colors.green : Colors.white, width: 2)),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.blueGrey, width: 2),
         ),
@@ -207,14 +218,23 @@ class _CategoryPickerState extends State<CategoryPicker> {
       ),
       value: _selectedCategory,
       isExpanded: true,
-      onChanged: (String? newValue) {
-        setState(() {
-          _selectedCategory = newValue;
-        });
+      onChanged: (String? value) {
+        if (value == null) {
+          setState(() {
+            isValid = false;
+            _selectedCategory = value;
+          });
+        } else {
+          FocusScope.of(context).requestFocus(FocusNode());
+          setState(() {
+            isValid = true;
+            _selectedCategory = value;
+          });
+        }
       },
       onSaved: widget.onSave,
-      validator: (value) => value == null ? "Select" : null,
-      items: categories.map<DropdownMenuItem<String>>((String value) {
+      validator: (value) => value == null ? 'Select' : null,
+      items: communityCategories.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),

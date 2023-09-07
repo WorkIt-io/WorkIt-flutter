@@ -13,15 +13,25 @@ class UserLocationNotifier extends StateNotifier<LatLng?> {
   UserLocationNotifier(this._ref): super(null);
 
   final StateNotifierProviderRef _ref;
+
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
   
   Future<void> getCurrentLocation() async
   {
     if (state == null)
     {
+      _isLoading = true;
       LocationData? myLocation = await _ref.read(locationRepositoryProvider).askPermission();
-      if (myLocation == null) return;
+      if (myLocation == null) 
+      {
+         _isLoading = false;
+        return;
+      }
       LatLng myLatLng = LatLng(myLocation.latitude!, myLocation.longitude!);
       state = myLatLng;
+      _isLoading = false;
     }    
   }
 }

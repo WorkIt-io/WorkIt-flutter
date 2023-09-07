@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
-import 'package:workit/constant/business_category.dart';
+import 'package:workit/constant/categories.dart';
 import 'package:workit/controller/user_controller.dart';
 import 'package:workit/models/business.dart';
 import 'package:workit/providers/business/businesses_notifier.dart';
@@ -208,19 +208,18 @@ class CategoryPicker extends StatefulWidget {
 
 class _CategoryPickerState extends State<CategoryPicker> {
   String? _selectedCategory;
+  bool isValid = false;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      style: _selectedCategory == null
-          ? const TextStyle(fontSize: 18, color: Colors.black87)
-          : const TextStyle(
-              fontSize: 18, color: Colors.green, fontWeight: FontWeight.bold),
+      style: const TextStyle(fontSize: 18, color: Colors.black87),
       decoration: InputDecoration(
         labelText: 'Category',
         labelStyle: const TextStyle(fontSize: 20, color: Colors.black87),
-        enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 2)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: isValid ? Colors.green : Colors.white, width: 2)),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.blueGrey, width: 2),
         ),
@@ -239,14 +238,23 @@ class _CategoryPickerState extends State<CategoryPicker> {
       ),
       value: _selectedCategory,
       isExpanded: true,
-      onChanged: (String? newValue) {
-        setState(() {
-          _selectedCategory = newValue;
-        });
+      onChanged: (String? value) {
+        if (value == null) {
+          setState(() {
+            isValid = false;
+            _selectedCategory = value;
+          });
+        } else {
+          FocusScope.of(context).requestFocus(FocusNode());
+          setState(() {
+            isValid = true;
+            _selectedCategory = value;
+          });
+        }
       },
       onSaved: widget.onSave,
-      validator: (value) => value == null ? "Select" : null,
-      items: categories.map<DropdownMenuItem<String>>((String value) {
+      validator: (value) => value == null ? 'Select' : null,
+      items: businessCategories.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),

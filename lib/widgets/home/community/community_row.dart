@@ -2,27 +2,26 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:workit/common/text_icon.dart';
-import 'package:workit/models/business.dart';
-import 'package:workit/providers/business/business_id.dart';
-
+import 'package:workit/models/community.dart';
+import 'package:workit/providers/community/community_id.dart';
 import 'package:workit/providers/user_location_notifier.dart';
-import 'package:workit/screens/business/businesses_detail_screen.dart';
+import 'package:workit/screens/community/community_detail_screen.dart';
+import 'package:workit/utils/date_parser.dart';
 import 'package:workit/utils/haversine_formula.dart';
 
-class BusinessRow extends ConsumerWidget {
-  const BusinessRow(this.businesses, {super.key});
-  
-  final List<BusinessModel> businesses;
+class CommunityRow extends ConsumerWidget {
+  const CommunityRow(this.communities, {super.key});
 
-  String? getDistance(LatLng businessLatLng, LatLng? myLatLng, WidgetRef ref) {
+  final List<Community> communities;
+
+  String? getDistance(LatLng communityLatLng, LatLng? myLatLng, WidgetRef ref) {
     if (myLatLng == null) return 'No Location';
 
     final double distance = HaversineFormula.haversineDistance(
         myLatLng.latitude,
         myLatLng.longitude,
-        businessLatLng.latitude,
-        businessLatLng.longitude);
+        communityLatLng.latitude,
+        communityLatLng.longitude);
     return distance.ceil().toString();
   }
 
@@ -35,23 +34,20 @@ class BusinessRow extends ConsumerWidget {
       height: 250,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: businesses.length,
+        itemCount: communities.length,
         itemBuilder: (context, index) {
           var theme = Theme.of(context);
           return GestureDetector(
             onTap: () {
-              ref.read(businessIdProvider.notifier).state =
-                  businesses[index].id;
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      BusinessDeatilScreen(business: businesses[index]),
-                ),
-              );
+              // change community Id Provider to communities[index].id
+              ref.read(communityIdProvider.notifier).state = communities[index].id;
+
+              // push to community detail screen.
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CommunityDetailScreen()));
             },
             child: Container(
               clipBehavior: Clip.hardEdge,
-              width: 270,
+              width: 300,
               margin: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -61,7 +57,7 @@ class BusinessRow extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  businesses[index].images.isEmpty
+                  communities[index].images.isEmpty
                       ? Image.asset(
                           "assets/images/workit_logo_no_bg.png",
                           fit: BoxFit.fill,
@@ -69,9 +65,9 @@ class BusinessRow extends ConsumerWidget {
                           width: double.infinity,
                         )
                       : CachedNetworkImage(
-                          imageUrl: businesses[index].images.first,                          
+                          imageUrl: communities[index].images.first,
                           placeholder: (context, url) => Image.asset(
-                              "assets/images/workit_logo_no_bg.png"),                              
+                              "assets/images/workit_logo_no_bg.png"),
                           fit: BoxFit.fill,
                           height: 100,
                           width: double.infinity,
@@ -84,7 +80,7 @@ class BusinessRow extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          businesses[index].name,
+                          communities[index].name,
                           maxLines: 1,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
@@ -95,7 +91,7 @@ class BusinessRow extends ConsumerWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          businesses[index].description,
+                          communities[index].description,
                           maxLines: 2,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
@@ -110,19 +106,16 @@ class BusinessRow extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 8, 10),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        TextIcon(
-                          text: businesses[index].rate.toString(),
-                          spacing: 1,
-                          icon: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
+                        Text(
+                          formatToCommunityRow(communities[index].date),
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(
                           height: 20,
                           child: VerticalDivider(
-                            width: 20,
+                            width: 25,
                             color: Colors.black,
                           ),
                         ),
@@ -132,31 +125,13 @@ class BusinessRow extends ConsumerWidget {
                             width: 20,
                             child: CircularProgressIndicator(),
                           ),
+                          const Spacer(),
                         if (!isLoading)
                           Text(
-                              "${getDistance(businesses[index].location, myLoc, ref) ?? 2} km"),
-                        const Spacer(),
-                        Container(
-                          padding: const EdgeInsets.only(
-                              right: 5, top: 5, bottom: 5, left: 5),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.horizontal(
-                                left: Radius.circular(10),
-                                right: Radius.circular(10)),
-                            color: Colors.blueAccent,
+                            "${getDistance(communities[index].location, myLoc, ref) ?? 2} km",
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),                            
                           ),
-                          child: TextIcon(
-                            text: businesses[index].price.toString(),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white),
-                            icon: const Icon(
-                              Icons.attach_money,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                        const SizedBox(width: 5,)
                       ],
                     ),
                   ),

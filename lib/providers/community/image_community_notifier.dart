@@ -58,7 +58,7 @@ class ImageCommunityNotifier extends StateNotifier<List<String>> {
 
   Future<void> _updateCommunityImages(Map<String, dynamic> map) async {
     await _ref
-        .read(communityStateNotifierProvider.notifier)
+        .read(communitiesStateNotifierProvider.notifier)
         .updateCommunity(map);
   }
 
