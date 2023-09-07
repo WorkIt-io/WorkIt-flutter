@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/providers/business/businesses_notifier.dart';
-
 import 'package:workit/providers/user_location_notifier.dart';
 import 'package:workit/widgets/home/business/business_row.dart';
 import 'package:workit/widgets/home/business/page_view_images_home.dart';
@@ -15,9 +14,7 @@ class BusinessesFeed extends ConsumerStatefulWidget {
   ConsumerState<BusinessesFeed> createState() => BusinessesFeedState();
 }
 
-class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
-  bool showDistance = false;
-
+class BusinessesFeedState extends ConsumerState<BusinessesFeed> {  
   @override
   void initState() {
     super.initState();
@@ -27,13 +24,10 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
           .getAllBusinessFromDatabase();
     }
 
-    getLocationBusiness();
-  }
-
-  void getLocationBusiness() {
-    setState(() => showDistance = !showDistance);
     ref.read(userLocationNotifierProvider.notifier).getCurrentLocation();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +75,7 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
             ),
           ),
           BusinessRow(
-            businesses,
-            showDistance: showDistance,
+            businesses,            
           ),
           const SizedBox(height: 20),
           const Divider(),
@@ -94,8 +87,7 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
                     fontWeight: FontWeight.bold)),
           ),
           BusinessRow(
-            businesses.reversed.toList(),
-            showDistance: showDistance,
+            businesses.reversed.toList(),            
           ),
           const SizedBox(height: 20),
           const Divider(),
@@ -107,18 +99,9 @@ class BusinessesFeedState extends ConsumerState<BusinessesFeed> {
                     fontWeight: FontWeight.bold)),
           ),
           BusinessRow(
-            businesses,
-            showDistance: showDistance,
+            businesses,            
           ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  onPressed: getLocationBusiness,
-                  child: const Text("get Location")),
-            ],
-          ),
+          const SizedBox(height: 10),                    
         ],
       ),
     );

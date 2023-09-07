@@ -8,18 +8,26 @@ ColorScheme colorScheme = ColorScheme.fromSeed(
 );
 
 class CurrentTheme {
-  
-
   ThemeData get themeData {
-    return ThemeData().copyWith(      
+    return ThemeData().copyWith(
       appBarTheme: const AppBarTheme().copyWith(
-        titleTextStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 24, color: Color.fromARGB(221, 21, 16, 16)),
+        titleTextStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 24,
+            color: Color.fromARGB(221, 21, 16, 16)),
         backgroundColor: colorScheme.secondaryContainer,
-        foregroundColor: colorScheme.onSecondaryContainer,         
+        foregroundColor: colorScheme.onSecondaryContainer,
       ),
       textTheme: GoogleFonts.latoTextTheme(),
       useMaterial3: true,
-      colorScheme: colorScheme,         
+      colorScheme: colorScheme,
+      timePickerTheme: const TimePickerThemeData().copyWith(
+        hourMinuteTextStyle: const TextStyle(fontSize: 45),
+        helpTextStyle: const TextStyle(
+          fontSize: 26,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 }

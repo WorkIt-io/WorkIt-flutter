@@ -2,16 +2,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/api/repository/community/community_repository.dart';
 import 'package:workit/models/community.dart';
 
-final communityStateNotifierProvider =
-    StateNotifierProvider<CommunityNotifier, List<Community>>((ref) {
+final communitiesStateNotifierProvider =
+    StateNotifierProvider<CommunitiesNotifier, List<Community>>((ref) {
   final communityRepository = ref.watch(communityRepositoryProvider);
-  return CommunityNotifier(communityRepository);
+  return CommunitiesNotifier(communityRepository);
 });
 
-class CommunityNotifier extends StateNotifier<List<Community>> {
+class CommunitiesNotifier extends StateNotifier<List<Community>> {
   final CommunityRepository _communityRepository;
 
-  CommunityNotifier(this._communityRepository) : super([]);
+  CommunitiesNotifier(this._communityRepository) : super([]);
 
   Future<void> addCommunity(Community community)
   async {

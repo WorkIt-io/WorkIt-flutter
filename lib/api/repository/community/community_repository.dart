@@ -27,7 +27,7 @@ class CommunityRepository {
 
     for (QueryDocumentSnapshot<Map<String, dynamic>> communityDoc
         in collection.docs) {
-      Map<String, dynamic> map = communityDoc.data();
+      Map<String, dynamic> map = communityDoc.data();      
       Community community = Community.fromMap(map);
       communityList.add(community);
     }

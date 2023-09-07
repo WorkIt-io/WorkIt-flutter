@@ -7,9 +7,13 @@ import 'package:workit/common/loader.dart';
 import 'package:workit/controller/auth_controller.dart';
 import 'package:workit/controller/user_controller.dart';
 import 'package:workit/models/business.dart';
+import 'package:workit/models/community.dart';
 import 'package:workit/providers/business/business_id.dart';
 import 'package:workit/providers/business/businesses_notifier.dart';
-import 'package:workit/screens/business_detail_screen_admin.dart';
+import 'package:workit/providers/community/communities_notifier.dart';
+import 'package:workit/providers/community/community_id.dart';
+import 'package:workit/screens/business/business_detail_screen_admin.dart';
+import 'package:workit/screens/community/community_detail_screen_admin.dart';
 import 'package:workit/widgets/profile/list_tile_darwer.dart';
 import 'package:workit/widgets/profile/profile_picture.dart';
 
@@ -56,26 +60,52 @@ class DrawerHomePage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 20),
-            if (data.role == 'Admin')
+            if (data.role == 'Admin' &&
+                data.businessId != null &&
+                data.businessId!.isNotEmpty)
               ListTileDrawer(
                   title: "My Business",
                   leadingIconData: Icons.business_sharp,
                   trailingIconData: Icons.arrow_right_alt_sharp,
-                  onTap: data.businessId != null
-                      ? () async {
-                          final BusinessModel business = await ref
-                              .read(businessesStateNotifierProvider.notifier)
-                              .getBusinessById(data.businessId!);  
+                  onTap: () async {
+                    final BusinessModel business = await ref
+                        .read(businessesStateNotifierProvider.notifier)
+                        .getBusinessById(data.businessId!);
 
-                          ref.read(businessIdProvider.notifier).state = business.id;                        
+                    ref.read(businessIdProvider.notifier).state = business.id;
 
-                          if (context.mounted) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  BusinessDeatilScreenAdmin(business: business)));
-                          }
-                        }
-                      : null),
+                    if (context.mounted) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              BusinessDeatilScreenAdmin(business: business)));
+                    }
+                  }),
+            if (data.role == 'Admin' &&
+                data.communityId != null &&
+                data.communityId!.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              ListTileDrawer(
+                  title: "My Community",
+                  leadingIconData: Icons.apartment_outlined,
+                  trailingIconData: Icons.arrow_right_alt_sharp,
+                  onTap: () async {
+                    // get community by Id with the Id in user.
+                    Community myCommunity = await ref
+                        .read(communitiesStateNotifierProvider.notifier)
+                        .getCommunityById(data.communityId!);
+
+                    // set the community Id Provider State to the community.id.
+                    ref.read(communityIdProvider.notifier).state =
+                        myCommunity.id;
+
+                    //navigate to screen.
+                    if (context.mounted) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              const CommunityDetailScreenAdmin()));
+                    }
+                  }),
+            ],
             const SizedBox(height: 10),
             const ListTileDrawer(
               title: "Events",

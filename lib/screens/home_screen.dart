@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:workit/screens/add_business_screen.dart';
+import 'package:workit/screens/business/add_business_screen.dart';
+
 
 import 'package:workit/screens/feeds/businesses_feed.dart';
 import 'package:workit/screens/feeds/communities_feed.dart';
+import 'package:workit/widgets/home/core/drawer_home_page.dart';
+import 'package:workit/widgets/home/core/navigation_bar.dart';
 
-import '../widgets/home/navigation_bar.dart';
-import '../widgets/home/drawer_home_page.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

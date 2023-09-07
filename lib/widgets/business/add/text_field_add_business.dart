@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:workit/controller/location_controller.dart';
-import 'package:workit/screens/add_business_screen.dart';
 
 class TextFieldAddBussines extends ConsumerStatefulWidget {
   const TextFieldAddBussines(
@@ -144,8 +143,7 @@ class _TextFiledAddBussinesState extends ConsumerState<TextFieldAddBussines> {
                 if (widget.onScroll != null) {
                   widget.onScroll!();
                 }
-              },
-              
+              },              
             onChanged: onChange,
             decoration: InputDecoration(
               suffixIcon: isValid

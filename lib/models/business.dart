@@ -22,20 +22,27 @@ class BusinessModel {
       required this.location,
       required this.category,
       required this.address,
-      this.images = const []
-      });
-  
-  factory BusinessModel.fromMap(Map<String, dynamic> map)
-  {
-    
-    return BusinessModel(id: map['id'], name: map['name'], phoneNumber: map['phone'] ,price: map['price']
-    , description: map['description'], rate: map['rate'], location: LatLng(map['lat'], map['lng']), category: map['category'], address: map['address'],
-    images: List<String>.from(map['images'])
-    );
+      this.images = const []});
+
+  factory BusinessModel.fromMap(Map<String, dynamic> map) {
+    return BusinessModel(
+        id: map['id'],
+        name: map['name'],
+        phoneNumber: map['phone'],
+        price: map['price'] is double
+            ? map['price']
+            : (map['price'] as int).toDouble(),
+        description: map['description'],
+        rate: map['rate'] is double
+            ? map['rate']
+            : (map['rate'] as int).toDouble(),
+        location: LatLng(map['lat'], map['lng']),
+        category: map['category'],
+        address: map['address'],
+        images: List<String>.from(map['images']));
   }
-  
-  Map<String, dynamic> toMap()
-  {
+
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,

@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:workit/widgets/business/detail/business_images_admin.dart';
+import 'package:workit/models/business.dart';
+import 'package:workit/widgets/business/detail/business_images.dart';
 import 'package:workit/widgets/business/detail/location_section.dart';
 import 'package:workit/widgets/business/detail/opening_times.dart';
 import 'package:workit/widgets/business/detail/text_section.dart';
 import 'package:workit/widgets/business/review/reviews_business.dart';
 
-import '../models/business.dart';
 
-class BusinessDeatilScreenAdmin extends ConsumerStatefulWidget {
-  const BusinessDeatilScreenAdmin({super.key, required this.business});
+
+class BusinessDeatilScreen extends ConsumerStatefulWidget {
+  const BusinessDeatilScreen({super.key, required this.business});
 
   final BusinessModel business;
 
   @override
-  ConsumerState<BusinessDeatilScreenAdmin> createState() => _BusinessDeatilScreenState();
+  ConsumerState<BusinessDeatilScreen> createState() => _BusinessDeatilScreenState();
 }
 
-class _BusinessDeatilScreenState extends ConsumerState<BusinessDeatilScreenAdmin> {
+class _BusinessDeatilScreenState extends ConsumerState<BusinessDeatilScreen> {
 
   @override
   void initState() {
-    super.initState();    
+    super.initState();
+    
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     var theme = Theme.of(context);
     Map<String, String> times = {
       "Sunday": "7 am - 10 pm",
@@ -47,7 +49,7 @@ class _BusinessDeatilScreenState extends ConsumerState<BusinessDeatilScreenAdmin
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const BusinessImagesAdmin(),
+            const BusinessImages(),
             const Divider(),
 
             // About Section
