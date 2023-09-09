@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Community{
+class Community {
   final String id;
   final String name;
   final LatLng location;
@@ -20,26 +20,26 @@ class Community{
     required this.location,
     required this.category,
     required this.address,
-    required this.date, 
+    required this.date,
     this.min,
     this.max,
     this.images = const [],
   });
-  
+
   factory Community.fromMap(Map<String, dynamic> map) {
     return Community(
-        id: map['id'],        
+        id: map['id'],
         name: map['name'],
         description: map['description'],
         location: LatLng(map['lat'], map['lng']),
         category: map['category'],
+        min: map['min'],
         address: map['address'],
         date: (map['date'] as Timestamp).toDate().toLocal(),
         images: List<String>.from(map['images']));
   }
-  
-  Map<String, dynamic> toMap()
-  {
+
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
