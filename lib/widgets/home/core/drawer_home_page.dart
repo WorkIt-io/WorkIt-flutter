@@ -101,8 +101,9 @@ class DrawerHomePage extends ConsumerWidget {
                     //navigate to screen.
                     if (context.mounted) {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              const CommunityDetailScreenAdmin()));
+                          builder: (context) => CommunityDetailScreenAdmin(
+                                community: myCommunity,
+                              )));
                     }
                   }),
             ],

@@ -40,10 +40,17 @@ class CommunityRow extends ConsumerWidget {
           return GestureDetector(
             onTap: () {
               // change community Id Provider to communities[index].id
-              ref.read(communityIdProvider.notifier).state = communities[index].id;
+              ref.read(communityIdProvider.notifier).state =
+                  communities[index].id;
 
               // push to community detail screen.
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CommunityDetailScreen()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CommunityDetailScreen(
+                    community: communities[index],
+                  ),
+                ),
+              );
             },
             child: Container(
               clipBehavior: Clip.hardEdge,
@@ -110,7 +117,8 @@ class CommunityRow extends ConsumerWidget {
                       children: [
                         Text(
                           formatToCommunityRow(communities[index].date),
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(
                           height: 20,
@@ -125,13 +133,16 @@ class CommunityRow extends ConsumerWidget {
                             width: 20,
                             child: CircularProgressIndicator(),
                           ),
-                          const Spacer(),
+                        const Spacer(),
                         if (!isLoading)
                           Text(
                             "${getDistance(communities[index].location, myLoc, ref) ?? 2} km",
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),                            
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
                           ),
-                        const SizedBox(width: 5,)
+                        const SizedBox(
+                          width: 5,
+                        )
                       ],
                     ),
                   ),
