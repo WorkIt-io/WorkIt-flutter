@@ -7,26 +7,24 @@ import 'package:workit/widgets/business/detail/opening_times.dart';
 import 'package:workit/widgets/business/detail/text_section.dart';
 import 'package:workit/widgets/business/review/reviews_business.dart';
 
-
 class BusinessDeatilScreen extends ConsumerStatefulWidget {
   const BusinessDeatilScreen({super.key, required this.business});
 
   final BusinessModel business;
 
   @override
-  ConsumerState<BusinessDeatilScreen> createState() => _BusinessDeatilScreenState();
+  ConsumerState<BusinessDeatilScreen> createState() =>
+      _BusinessDeatilScreenState();
 }
 
 class _BusinessDeatilScreenState extends ConsumerState<BusinessDeatilScreen> {
-
   @override
   void initState() {
     super.initState();
-    
   }
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     var theme = Theme.of(context);
     Map<String, String> times = {
       "Sunday": "7 am - 10 pm",
