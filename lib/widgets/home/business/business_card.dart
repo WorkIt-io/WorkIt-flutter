@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:workit/common/text_icon.dart';
+import 'package:workit/constant/colors.dart';
 import 'package:workit/models/business.dart';
 import 'package:workit/providers/business/business_id.dart';
 import 'package:workit/providers/user_location_notifier.dart';
@@ -41,12 +42,17 @@ class BusinessCard extends ConsumerWidget {
           ),
         );
       },
-      child: Container(        
+      child: Container(
         clipBehavior: Clip.hardEdge,
-        width: 270,        
+        width: 270,
         margin: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
-          boxShadow: addShadow ? [const BoxShadow(blurRadius: 4, spreadRadius: 1.5, offset: Offset(3, 3))] : null,
+          boxShadow: addShadow
+              ? [
+                  const BoxShadow(
+                      blurRadius: 4, spreadRadius: 1.5, offset: Offset(3, 3))
+                ]
+              : null,
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
@@ -136,17 +142,17 @@ class BusinessCard extends ConsumerWidget {
                       borderRadius: BorderRadius.horizontal(
                           left: Radius.circular(10),
                           right: Radius.circular(10)),
-                      color: Colors.blueAccent,
+                      color: Color(0xffffd7be),
                     ),
                     child: TextIcon(
                       text: business.price.toString(),
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
-                          color: Colors.white),
+                          color: Colors.black),
                       icon: const Icon(
                         Icons.attach_money,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ),

@@ -31,7 +31,7 @@ class CommunitiesFeedState extends ConsumerState<CommunitiesFeed> {
   }
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     List<Community> communities = ref.watch(communitiesStateNotifierProvider);
 
     return SingleChildScrollView(
@@ -43,33 +43,44 @@ class CommunitiesFeedState extends ConsumerState<CommunitiesFeed> {
           const Padding(
             padding: EdgeInsets.only(left: 8.0, top: 8.0),
             child: SizedBox(
-                height: 210, child: PageViewImagesHome(images: communityImages, description: communityTextImages, title: communityTextDescription,)),
+                height: 210,
+                child: PageViewImagesHome(
+                  images: communityImages,
+                  description: communityTextImages,
+                  title: communityTextDescription,
+                )),
           ),
           const SizedBox(height: 10),
-          const Divider(),                    
+          const Divider(),
           const Padding(
-            padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
-            child: TitleRow(title: "Near By")
-          ),
+              padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
+              child: TitleRow(title: "Near By")),
           CommunityRow(
             communities,
           ),
           const SizedBox(height: 20),
           const Divider(),
-           const Padding(
-            padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
-            child: TitleRow(title: "Categories", seeAll: false,)
-          ),
-          const CategoryRow(communityCategories),          
-          const Divider(),          
           const Padding(
-            padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
-            child: TitleRow(title: "Most Popular")
+              padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
+              child: TitleRow(
+                title: "Categories",
+                seeAll: false,
+              )),
+          const CategoryRow(communityCategories),
+          const Divider(),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
+              child: TitleRow(title: "Most Popular")),
+          CommunityRow(
+            communities.reversed.toList(),
           ),
+          const Divider(),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
+              child: TitleRow(title: "New")),
           CommunityRow(
             communities,
-          ),          
-          const Divider(),          
+          ),
         ],
       ),
     );
