@@ -34,6 +34,7 @@ class CategoryRow extends ConsumerWidget {
                 width: 100,
                 decoration: BoxDecoration(                  
                   color: lightColor,
+
                   borderRadius: BorderRadius.circular(40),
                 ),
                 alignment: Alignment.center,
