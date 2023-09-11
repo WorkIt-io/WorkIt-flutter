@@ -107,10 +107,10 @@ class DrawerHomePage extends ConsumerWidget {
                     }
                   }),
             ],
-            const SizedBox(height: 10),
+            const SizedBox(height: 10),            
             const ListTileDrawer(
-              title: "Events",
-              leadingIconData: Icons.event_available_outlined,
+              title: "My Favorite",
+              leadingIconData: Icons.favorite,
               trailingIconData: Icons.arrow_right_alt_sharp,
             ),
             const SizedBox(height: 10),

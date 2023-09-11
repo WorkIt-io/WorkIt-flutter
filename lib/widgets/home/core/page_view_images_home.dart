@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:workit/constant/home_images.dart';
 
 class PageViewImagesHome extends StatefulWidget {
-  const PageViewImagesHome({super.key});
+  const PageViewImagesHome({super.key, required this.images, required this.description, required this.title});
+
+  final List<String> images;
+  final List<String> description;
+  final List<String> title;
 
   @override
   State<PageViewImagesHome> createState() => _PageViewImagesHomeState();
@@ -39,7 +43,7 @@ class _PageViewImagesHomeState extends State<PageViewImagesHome> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    for (var imageAsset in homeImages) {
+    for (var imageAsset in widget.images) {
       precacheImage(AssetImage(imageAsset), context);
     }
   }
@@ -53,26 +57,26 @@ class _PageViewImagesHomeState extends State<PageViewImagesHome> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
+    return PageView(            
       physics: const NeverScrollableScrollPhysics(),
       controller: pageController,
       children: [
         ...List.generate(
-          homeImages.length,
+          widget.images.length,
           (index) => Row(
-            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,            
             children: [
               Container(
                 clipBehavior: Clip.hardEdge,
-                width: 200,
-                height: 250,
+                width: 210,                
                 decoration: const BoxDecoration(
                   borderRadius:
                       BorderRadius.horizontal(right: Radius.circular(70)),
                 ),
                 child: Image.asset(
-                  homeImages[index],
-                  fit: BoxFit.cover,
+                  widget.images[index],
+                  fit: BoxFit.fill,
                 ),
               ),
               Expanded(
@@ -81,9 +85,9 @@ class _PageViewImagesHomeState extends State<PageViewImagesHome> {
                   children: [
                     const SizedBox(height: 10),
                     Text(
-                      homeTextImages[index],
+                      widget.title[index],
                       textAlign: TextAlign.center,
-                      maxLines: 2,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
                       style: TextStyle(
@@ -93,7 +97,7 @@ class _PageViewImagesHomeState extends State<PageViewImagesHome> {
                     ),
                     const SizedBox(height: 15,),
                     Text(
-                      homeTextDescription[index],
+                      widget.description[index],
                       textAlign: TextAlign.center,
                       softWrap: true,
                       maxLines: 3,
@@ -103,7 +107,7 @@ class _PageViewImagesHomeState extends State<PageViewImagesHome> {
                     ),
                     const Spacer(),
                     DotsIndicator(
-                        position: currentPage, dotsCount: homeImages.length),
+                        position: currentPage, dotsCount: businessImages.length),
                   ],
                 ),
               ),

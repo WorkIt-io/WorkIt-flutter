@@ -33,6 +33,7 @@ class _FormAddCommunityState extends ConsumerState<FormAddCommunity> {
   String _description = '';
   String _address = '';
   String _dateTime = '';
+  String _phoneNumber = '';
 
   TextEditingController addressController = TextEditingController();
 
@@ -53,8 +54,9 @@ class _FormAddCommunityState extends ConsumerState<FormAddCommunity> {
       final communityId = const Uuid()
           .v4(); // maybe later change to user.id for have 1 business to 1 user.
 
-      final Community community = Community(
+      final Community community = Community(        
           id: communityId,
+          phoneNumber: _phoneNumber,
           name: _name,
           description: _description,
           location: _location!,
@@ -103,6 +105,15 @@ class _FormAddCommunityState extends ConsumerState<FormAddCommunity> {
                 hintText: "Community Name:",
                 type: TextInputType.text,
                 validate: FormAddBusinessHelper.validateName,
+              ),
+            ),
+            Flexible(
+              fit: FlexFit.loose,
+              child: TextFieldAddBussines(
+                onSave: (value) => _phoneNumber = value!,
+                hintText: "Phone Number:",
+                type: TextInputType.phone,
+                validate: FormAddBusinessHelper.validatePhone,
               ),
             ),
             Flexible(

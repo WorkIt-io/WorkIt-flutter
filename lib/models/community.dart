@@ -9,6 +9,7 @@ class Community {
   final String category;
   final String address;
   final DateTime date;
+  final String phoneNumber;
   final int? min;
   final int? max;
   List<String> images;
@@ -21,6 +22,7 @@ class Community {
     required this.category,
     required this.address,
     required this.date,
+    required this.phoneNumber,
     this.min,
     this.max,
     this.images = const [],
@@ -28,13 +30,14 @@ class Community {
 
   factory Community.fromMap(Map<String, dynamic> map) {
     return Community(
-        id: map['id'],
+        id: map['id'],        
         name: map['name'],
         description: map['description'],
         location: LatLng(map['lat'], map['lng']),
         category: map['category'],
         min: map['min'],
         address: map['address'],
+        phoneNumber: map['phone'],
         date: (map['date'] as Timestamp).toDate().toLocal(),
         images: List<String>.from(map['images']));
   }
@@ -48,6 +51,7 @@ class Community {
       'lng': location.longitude,
       'category': category,
       'address': address,
+      'phone': phoneNumber,
       'min': min,
       'max': max,
       'date': date,

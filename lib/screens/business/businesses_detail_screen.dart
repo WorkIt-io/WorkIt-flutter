@@ -5,6 +5,7 @@ import 'package:workit/widgets/business/detail/business_images.dart';
 import 'package:workit/widgets/business/detail/location_section.dart';
 import 'package:workit/widgets/business/detail/opening_times.dart';
 import 'package:workit/widgets/business/detail/text_section.dart';
+import 'package:workit/widgets/business/detail/whatsapp_button.dart';
 import 'package:workit/widgets/business/review/reviews_business.dart';
 
 class BusinessDeatilScreen extends ConsumerStatefulWidget {
@@ -40,41 +41,61 @@ class _BusinessDeatilScreenState extends ConsumerState<BusinessDeatilScreen> {
       appBar: AppBar(
         title: Text(widget.business.name),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const BusinessImages(),
-            const Divider(),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const BusinessImages(),
+                const Divider(),
 
-            // About Section
-            TextSection(
-              "About",
-              widget.business.description,
-              theme,
+                // About Section
+                TextSection(
+                  "About",
+                  widget.business.description,
+                  theme,
+                ),
+
+                const Divider(),
+
+                // Opening Times
+                OpeningTimes(times, theme),
+                const Divider(),
+
+                LocationSection(widget.business.address, theme),
+                const Divider(),
+
+                const SizedBox(height: 20),
+                Text(
+                  "Reviews",
+                  style: theme.textTheme.displaySmall!.copyWith(
+                      color: theme.colorScheme.primary,
+                      fontWeight: FontWeight.bold),
+                ),
+                const ReviewsBusiness(),
+
+                const SizedBox(height: 20),
+                //const Divider(),
+                //const SizedBox(height: 10),
+              ],
             ),
-
-            const Divider(),
-
-            // Opening Times
-            OpeningTimes(times, theme),
-            const Divider(),
-
-            LocationSection(widget.business.address, theme),
-            const Divider(),
-
-            const SizedBox(height: 20),
-            Text(
-              "Reviews",
-              style: theme.textTheme.displaySmall!.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.bold),
+          ),
+          Positioned(
+            bottom: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                boxShadow: [BoxShadow(blurRadius: 0.5)],
+                shape: BoxShape.rectangle,
+                color: Colors.white,
+              ),
+              child: WhatsAppButton(widget.business.phoneNumber),
             ),
-            const ReviewsBusiness(),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

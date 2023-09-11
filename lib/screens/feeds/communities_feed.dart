@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/constant/categories.dart';
+import 'package:workit/constant/home_images.dart';
 import 'package:workit/models/community.dart';
 import 'package:workit/providers/community/communities_notifier.dart';
 import 'package:workit/providers/user_location_notifier.dart';
 import 'package:workit/widgets/home/community/community_row.dart';
+import 'package:workit/widgets/home/core/category_row.dart';
+import 'package:workit/widgets/home/core/page_view_images_home.dart';
+import 'package:workit/widgets/home/core/title_row.dart';
 
 class CommunitiesFeed extends ConsumerStatefulWidget {
   const CommunitiesFeed({super.key});
@@ -26,49 +31,47 @@ class CommunitiesFeedState extends ConsumerState<CommunitiesFeed> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
+  Widget build(BuildContext context) {    
     List<Community> communities = ref.watch(communitiesStateNotifierProvider);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: 10),
-        const Divider(),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8, 8, 0, 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Near By",
-                  style: theme.textTheme.headlineMedium!.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.bold)),
-              TextButton(
-                onPressed: () {},
-                child: const Row(
-                  children: [
-                    Text(
-                      "See All",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Icon(
-                      Icons.arrow_right,
-                      size: 30,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 8.0, top: 8.0),
+            child: SizedBox(
+                height: 210, child: PageViewImagesHome(images: communityImages, description: communityTextImages, title: communityTextDescription,)),
           ),
-        ),
-        CommunityRow(
-          communities,
-        ),
-        const SizedBox(height: 20),
-        const Divider(),
-      ],
+          const SizedBox(height: 10),
+          const Divider(),                    
+          const Padding(
+            padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
+            child: TitleRow(title: "Near By")
+          ),
+          CommunityRow(
+            communities,
+          ),
+          const SizedBox(height: 20),
+          const Divider(),
+           const Padding(
+            padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
+            child: TitleRow(title: "Categories", seeAll: false,)
+          ),
+          const CategoryRow(communityCategories),          
+          const Divider(),          
+          const Padding(
+            padding: EdgeInsets.fromLTRB(10, 8, 0, 16),
+            child: TitleRow(title: "Most Popular")
+          ),
+          CommunityRow(
+            communities,
+          ),          
+          const Divider(),          
+        ],
+      ),
     );
   }
 }
