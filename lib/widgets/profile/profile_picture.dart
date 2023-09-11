@@ -1,19 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/controller/user_controller.dart';
 
 import '../../common/select_image.dart';
 
-class ProfilePicture extends StatefulWidget {
+class ProfilePicture extends ConsumerStatefulWidget {
   const ProfilePicture({super.key, required this.profilePicture});
 
   final String? profilePicture;
 
   @override
-  State<ProfilePicture> createState() => _ProfilePictureState();
+  ConsumerState<ProfilePicture> createState() => _ProfilePictureState();
 }
 
-class _ProfilePictureState extends State<ProfilePicture> {
+class _ProfilePictureState extends ConsumerState<ProfilePicture> {
   File? profileImage;
 
   ImageProvider<Object> getProfileImage() {
@@ -40,6 +42,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
             onTap: () async {
               File? image = await takeImageFromCamera(context);
               if (image != null) {
+                ref.read(userControllerProvider).uploadProfilePicture(image);
                 setState(() => profileImage = image);
               }
             },

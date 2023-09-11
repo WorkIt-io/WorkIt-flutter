@@ -129,7 +129,7 @@ class DrawerHomePage extends ConsumerWidget {
               leading: IconButton(
                 onPressed: () async {
                   await ref.read(authControllerProvider).signOut();
-                  await ref.read(userControllerProvider).deleteUser();
+                  //await ref.read(userControllerProvider).deleteUser();
                 },
                 icon: Transform.rotate(
                     angle: pi,

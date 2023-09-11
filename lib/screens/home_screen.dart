@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const DrawerHomePage(),
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: const Text('WorkIt'),
         backgroundColor: Colors.blueGrey[100],

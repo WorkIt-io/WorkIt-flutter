@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/constant/categories.dart';
+import 'package:workit/constant/colors.dart';
 import 'package:workit/providers/search_notifier.dart';
 
 class CategoryGridView extends ConsumerWidget {
@@ -25,9 +26,9 @@ class CategoryGridView extends ConsumerWidget {
               .searchByCategory(allCategories[index]);
         },
         child: Container(
-          decoration: const BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.horizontal(
+          decoration: BoxDecoration(
+              color: lightColor,
+              borderRadius: const BorderRadius.horizontal(
                   left: Radius.circular(50), right: Radius.circular(50))),
           alignment: Alignment.center,
           child: Text(

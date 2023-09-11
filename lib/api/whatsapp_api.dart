@@ -1,7 +1,7 @@
 
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final whatsAppProvider = Provider<WhatsAppApi>((ref) {
   return WhatsAppApi();
@@ -10,15 +10,15 @@ final whatsAppProvider = Provider<WhatsAppApi>((ref) {
 class WhatsAppApi {
   Future sendWhatsApp(String phoneNumber)
   async {
-    String url = "whatsapp://send?phone=$phoneNumber&text=Hello, Can i have more details?";
-    bool canLaunch = await canLaunchUrlString(url);    
-    if (canLaunch)
+    String url = "whatsapp://send?$phoneNumber&text=Hello, Can i have more details?";    
+    try 
     { 
-      await launchUrlString(url);
+      await launchUrl(Uri.parse(url));
     }
-    else
+    catch (e)
     {
       throw Exception("No Whats app available");
+      //throw Exception(e.toString());
     }
   }
 }

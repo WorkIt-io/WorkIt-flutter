@@ -22,12 +22,12 @@ class WhatsAppButton extends ConsumerWidget {
               }
             }
           },
-        child: Container(          
+        child: Container(
           height: 60,
           margin:  const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
           decoration:  BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: const Color.fromARGB(255, 110, 59, 228),
+            color: const Color.fromARGB(255, 110, 59, 228),  
           ),       
           child: Row(            
             children: [

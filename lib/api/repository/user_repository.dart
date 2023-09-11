@@ -53,11 +53,8 @@ class UserRepository {
 
   }
 
-  Future updateProfilePicture(String downloadUrl) async {
-    final userId = _firebase.currentUser!.uid;
-    final ref = _firestore.collection('users').doc(userId);
-
-    await ref.update({
+  Future updateProfilePicture(String downloadUrl) async {    
+    updateUser({
       'image': downloadUrl,
     });
   }
@@ -65,15 +62,15 @@ class UserRepository {
   Future<String> uploadProfilePicture(File image)
   async {
     await _ref.read(storageApiProvider).uploadFile(path, image);
-    return _ref.read(storageApiProvider).getRefrence(path).getDownloadURL();
+    return await _ref.read(storageApiProvider).getRefrence(path).getDownloadURL();
   }
 
-  Future deleteUser() async {
-    final userId = _firebase.currentUser!.uid;
-    final ref = _firestore.collection('users').doc(userId);
+  // Future deleteUser() async {
+  //   final userId = _firebase.currentUser!.uid;
+  //   final ref = _firestore.collection('users').doc(userId);
 
-    await ref.delete();
-  }
+  //   await ref.delete();
+  // }
 
   Future<Map<String, dynamic>> getUser() async {
     final userId = _firebase.currentUser!.uid;
