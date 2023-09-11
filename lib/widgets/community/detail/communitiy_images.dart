@@ -182,7 +182,7 @@ class _CommunityImagesState extends ConsumerState<CommunityImages> {
                             imageUrl: images[index],
                             placeholder: (context, url) => Image.asset(
                                 'assets/images/workit_logo_no_bg.png'),
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                         );
                       },

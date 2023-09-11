@@ -7,22 +7,21 @@ import 'package:workit/widgets/business/detail/opening_times.dart';
 import 'package:workit/widgets/business/detail/text_section.dart';
 import 'package:workit/widgets/business/review/reviews_business.dart';
 
-
-
 class BusinessDeatilScreenAdmin extends ConsumerStatefulWidget {
   const BusinessDeatilScreenAdmin({super.key, required this.business});
 
   final BusinessModel business;
 
   @override
-  ConsumerState<BusinessDeatilScreenAdmin> createState() => _BusinessDeatilScreenState();
+  ConsumerState<BusinessDeatilScreenAdmin> createState() =>
+      _BusinessDeatilScreenState();
 }
 
-class _BusinessDeatilScreenState extends ConsumerState<BusinessDeatilScreenAdmin> {
-
+class _BusinessDeatilScreenState
+    extends ConsumerState<BusinessDeatilScreenAdmin> {
   @override
   void initState() {
-    super.initState();    
+    super.initState();
   }
 
   @override
@@ -66,7 +65,7 @@ class _BusinessDeatilScreenState extends ConsumerState<BusinessDeatilScreenAdmin
 
             LocationSection(widget.business.address, theme),
             const Divider(),
-
+            
             const SizedBox(height: 20),
             Text(
               "Reviews",

@@ -99,7 +99,7 @@ class _TextFiledAddBussinesState extends ConsumerState<TextFieldAddBussines> {
     if (widget.type == TextInputType.streetAddress) // only for address
     {
       if (_timer?.isActive ?? false) _timer!.cancel();
-      _timer = Timer(const Duration(milliseconds: 800), () {
+      _timer = Timer(const Duration(milliseconds: 700), () {
         if (value.isNotEmpty) {
           getAutoComplete(value);
         } else {
