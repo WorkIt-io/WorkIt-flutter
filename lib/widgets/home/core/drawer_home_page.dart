@@ -33,7 +33,7 @@ class DrawerHomePage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 245,
+              height: 275,
               child: DrawerHeader(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -107,7 +107,7 @@ class DrawerHomePage extends ConsumerWidget {
                     }
                   }),
             ],
-            const SizedBox(height: 10),            
+            const SizedBox(height: 10),
             const ListTileDrawer(
               title: "My Favorite",
               leadingIconData: Icons.favorite,
