@@ -138,11 +138,11 @@ class BusinessCard extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.only(
                         right: 5, top: 5, bottom: 5, left: 5),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.horizontal(
                           left: Radius.circular(10),
                           right: Radius.circular(10)),
-                      color: Color(0xffffd7be),
+                      color: veryLightColor,
                     ),
                     child: TextIcon(
                       text: business.price.toString(),
