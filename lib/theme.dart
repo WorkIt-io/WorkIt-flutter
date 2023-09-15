@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:workit/constant/colors.dart';
 
 ColorScheme colorScheme = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(212, 255, 168, 36),
@@ -15,7 +16,7 @@ class CurrentTheme {
             fontWeight: FontWeight.w600,
             fontSize: 24,
             color: Color.fromARGB(221, 21, 16, 16)),
-        backgroundColor: colorScheme.secondaryContainer,
+        backgroundColor: veryLightColor,
         foregroundColor: colorScheme.onSecondaryContainer,
       ),
       textTheme: GoogleFonts.latoTextTheme(),

@@ -25,7 +25,7 @@ class StorageApi {
 
   Future<void> uploadFile(String path, File file)
   async {
-    _storage.ref(path).putFile(file);
+    await _storage.ref(path).putFile(file);
   }
 
   Future<void> deleteFile(String path)

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workit/constant/colors.dart';
 import 'package:workit/providers/search_notifier.dart';
 import 'package:workit/screens/model_column_search.dart';
 
@@ -31,8 +32,9 @@ class CategoryRow extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
               child: Container(
                 width: 100,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
+                decoration: BoxDecoration(                  
+                  color: lightColor,
+
                   borderRadius: BorderRadius.circular(40),
                 ),
                 alignment: Alignment.center,

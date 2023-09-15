@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workit/common/custom_snack_bar.dart.dart';
 import 'package:workit/common/loading_dialog.dart';
+import 'package:workit/constant/colors.dart';
 import 'package:workit/utils/login_page_helper.dart';
 import 'package:workit/widgets/login/login_button.dart';
 import 'package:workit/widgets/login/login_square_tile.dart';
@@ -32,14 +33,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       startLoadingDialog(context);
 
       try {
-        _isLogin == true
-            ? await ref.read(authControllerProvider).login(_email, _password)
-            : await ref
-                .read(authControllerProvider)
-                .signup(_email, _password, _fullName);
-
-        if (context.mounted && Navigator.canPop(context)) {
-          Navigator.of(context).pop(); // pop loading dialog
+        if (_isLogin == true) {
+          await ref.read(authControllerProvider).login(_email, _password);
+          if (context.mounted && Navigator.canPop(context)) {
+            Navigator.of(context).pop(); // pop loading dialog
+          }
+        } else {
+          await ref
+              .read(authControllerProvider)
+              .signup(_email, _password, _fullName);
         }
       } on FirebaseAuthException catch (e) {
         if (context.mounted) {
@@ -60,7 +62,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: lightColor,
         body: SingleChildScrollView(
           reverse: true,
           child: Column(
@@ -164,11 +166,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   .read(authControllerProvider)
                                   .googleSignIn();
                             } catch (e) {
-                              if (context.mounted) CustomSnackBar.showSnackBar(context, e.toString());
+                              if (context.mounted)
+                                CustomSnackBar.showSnackBar(
+                                    context, e.toString());
                             }
                           },
                         ),
-                        const SquareTile(imagePath: 'assets/images/login/apple.png'),
+                        const SquareTile(
+                            imagePath: 'assets/images/login/apple.png'),
                       ],
                     ),
                     const SizedBox(height: 25),

@@ -34,9 +34,9 @@ class UserController {
     _updateProfilePicture(downloadUrl);
   }
 
-  Future deleteUser() async {
-    await _userRepository.deleteUser();
-  }
+  // Future deleteUser() async {
+  //   await _userRepository.deleteUser();
+  // }
 
   Future updateUser(Map<String, dynamic> map) async {
     await _userRepository.updateUser(map);
